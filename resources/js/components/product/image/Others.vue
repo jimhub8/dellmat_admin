@@ -62,7 +62,6 @@ export default {
             upload_files: [],
             product: [],
             images: [],
-            product_id: null
         };
     },
     methods: {
@@ -76,7 +75,7 @@ export default {
                 formData.append("image", this.files[i]);
 
                 axios
-                    .post(`/product_image/${this.product.id}`, formData, {
+                    .post(`/product_image/${this.product_id}`, formData, {
                         headers: {
                             "Content-Type": "multipart/form-data"
                         }
@@ -117,7 +116,7 @@ export default {
                     .then(response => {
                         // alert('finish2')
                         eventBus.$emit("alertRequest", "Successifully Created");
-                        this.getImages();
+                        // this.getImages();
                         this.loading = false;
                         this.clear();
                         // this.sendmail()

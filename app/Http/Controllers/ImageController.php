@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\models\Image;
+use App\models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -92,15 +93,45 @@ class ImageController extends Controller
                 $image_path = $image->image;
                 File::delete($image_path);
             }
-            $imagename = Storage::disk('public')->put('products', $img);
+            $imagename = Storage::disk('dellmat')->put('products', $img);
+            // $imagename = Storage::disk('public')->put('products', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            $image->image = '/storage/products/' . $image_name;
+            $image->image = '/delstorage/products/' . $image_name;
+            // $image->image = '/storage/products/' . $image_name;
             // $image->image = env('APP_URL') . '/storage/products/' . $image_name;
             $image->display = true;
             $image->save();
             return $image;
         }
         return 'error';
+    }
+
+    public function product_image(Request $request, $id)
+    {
+        // dd($request->image);
+        $upload = new Image();
+        // $upload = Product::find($id);
+        $upload->product_id = $id;
+        if ($request->hasFile('image')) {
+            $img = $request->image;
+            // dd($upload->image);
+            if (File::exists($upload->image)) {
+                // return ('test');
+                $image_path = $upload->image;
+                File::delete($image_path);
+            }
+            $imagename = Storage::disk('dellmat')->put('pro_images', $img);
+            // $imagename = Storage::disk('public')->put('pro_images', $img);
+            // return ('noop');
+            $imgArr = explode('/', $imagename);
+            $image_name = $imgArr[1];
+            $upload->image = '/delstorage/pro_images/' . $image_name;
+            // $upload->image = '/storage/pro_images/' . $image_name;
+            $upload->display = false;
+            // $upload->image = env('APP_URL') . '/storage/products/' . $image_name;
+            $upload->save();
+            return $upload;
+        }
     }
 }

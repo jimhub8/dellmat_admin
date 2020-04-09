@@ -115,28 +115,6 @@ class ProductController extends Controller
         Product::find($id)->delete();
     }
 
-    public function product_image(Request $request, $id)
-    {
-        // dd($request->image);
-        $upload = Product::find($request->id);
-        if ($request->hasFile('image')) {
-            $img = $request->image;
-            // dd($upload->image);
-            if (File::exists($upload->image)) {
-                // return ('test');
-                $image_path = $upload->image;
-                File::delete($image_path);
-            }
-            $imagename = Storage::disk('public')->put('products', $img);
-            // return ('noop');
-            $imgArr = explode('/', $imagename);
-            $image_name = $imgArr[1];
-            $upload->image = '/storage/products/' . $image_name;
-            // $upload->image = env('APP_URL') . '/storage/products/' . $image_name;
-            $upload->save();
-            return $upload;
-        }
-    }
 
     public function product_search($search)
     {

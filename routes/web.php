@@ -44,7 +44,7 @@ Route::group(['middleware' => ['authcheck']], function () {
 
 
     Route::post('images/{id}', 'ImageController@images')->name('images');
-    Route::post('product_image/{id}', 'ProductController@product_image')->name('product_image');
+    Route::post('product_image/{id}', 'ImageController@product_image')->name('product_image');
 
     Route::get('product_search/{search}', 'ProductController@product_search')->name('product_search');
 
