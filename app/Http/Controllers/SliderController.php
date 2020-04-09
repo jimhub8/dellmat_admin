@@ -45,10 +45,12 @@ class SliderController extends Controller
         if ($request->hasFile('image')) {
             $img = $request->image;
 
-            $imagename = Storage::disk('public')->put('slider', $img);
+            $imagename = Storage::disk('dellmat')->put('slider', $img);
+            // $imagename = Storage::disk('public')->put('slider', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            $image->image = '/storage/slider/' . $image_name;
+            // $image->image = '/storage/slider/' . $image_name;
+            $image->image = '/delstorage/pro_images/' . $image_name;
             // $image->content = $request->content;
             $image->active = true;
             $image->save();
