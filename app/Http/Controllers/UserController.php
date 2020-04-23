@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Shipment;
 use App\User;
+use Bitfumes\Multiauth\Model\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -19,9 +20,13 @@ class UserController extends Controller
     }
     public function index()
     {
-        $users = User::orderBy('name')->with('roles')->paginate(500);
+        $users = Admin::orderBy('name')->with('roles')->paginate(500);
         $users->transform(function ($user, $key) {
-            $user->status = 'active';
+            $user->status = ($user->active) ? 'active' : 'not active';
+            $user->active_status = ($user->active) ? 'true' : null;
+            $role = (!empty($user->roles[0])) ? $user->roles[0] : 0;
+            // dd($role);
+            $user->role = $role['id'];
             return $user;
         });
         return response()->json($users);
@@ -34,28 +39,28 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // return $this->generateRandomString();
         // return $request->all();
         $this->Validate($request, [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:admins',
             'phone' => 'required',
-            'role_id' => 'required',
         ]);
-        // return $request->all();
-        $user = new User;
+        $admin = new Admin;
         $password = $this->generateRandomString();
         $password_hash = Hash::make($password);
-        $user->password = $password_hash;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        // $user->activation_token = str_random(60);
-        $user->save();
-        $user->assignRole($request->role_id);
+        $admin->password = $password_hash;
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->phone = $request->phone;
+        $admin->address = $request->address;
+        $admin->active = ($request->active_status) ? true : false;
+        $admin->save();
+        $admin->roles()->sync(request('role'));
+        // $user->assignRole($request->role_id);
 
-        return $user;
+        return $admin;
     }
+
     public function generateRandomString($length = 10)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -81,17 +86,18 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'phone' => 'required',
-            'role_id' => 'required'
+            'role' => 'required'
         ]);
-        $user = User::find($id);
-        $user->city = $request->city;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->phone;
-        $user->save();
-        $user->syncRoles($request->role_id);
+        $admin = Admin::find($id);
+        $admin->name = $request->name;
+        $admin->email = $request->email;
+        $admin->phone = $request->phone;
+        $admin->address = $request->address;
+        $admin->active = ($request->active_status) ? true : false;
+        $admin->save();
+        $admin->roles()->sync(request('role'));
 
-        return $user;
+        return $admin;
     }
 
     public function AuthUserUp(Request $request)
@@ -120,7 +126,7 @@ class UserController extends Controller
 
     public function getLogedinUsers()
     {
-        return $this->logged_user()
+        return $this->logged_user();
     }
 
     public function profile(Request $request, $id)

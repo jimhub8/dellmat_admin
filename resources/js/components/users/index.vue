@@ -1,189 +1,149 @@
 <template>
-<div>
-    <v-content>
-        <v-container fluid fill-height v-show="!loader">
-            <v-layout justify-center align-center>
-                <div style="width: 100%;">
-                    <!-- users display -->
-                    <v-card-title>
-                        Users
-                        <!-- <download-excel :data="users" :fields="json_fields">
-                            Export
-                            <img src="/storage/csv.png" style="width: 30px; height: 30px; cursor: pointer;">
-                        </download-excel> -->
-                        <v-btn slot="activator" color="primary" dark text @click="openAdd">Add User</v-btn>
-                        <v-btn slot="activator" color="orange" dark text @click="openDeleted">Deleted Users</v-btn>
-                        <v-tooltip right>
-                            <template v-slot:activator="{ on }">
-                                <v-btn icon v-on="on" slot="activator" class="mx-0" @click="getUsers">
-                                    <v-icon color="blue darken-2" small>refresh</v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Refresh</span>
-                        </v-tooltip>
-                        <v-spacer></v-spacer>
-                    </v-card-title>
-                    <v-flex sm12 v-loading="loading_t">
-                        <vue-good-table class="table-hover" :columns="columns" :rows="users.data" :search-options="{ enabled: true }" :pagination-options="{enabled: true,mode: 'pages'}" >
-                            <template slot="table-row" slot-scope="props">
-                                <span v-if="props.column.field == 'created_at'">
-                                    <span>
-                                        <el-tag type="success">{{props.row.created_at}}</el-tag>
-                                    </span>
-                                </span>
-                                <span v-else-if="props.column.field == 'actions'">
-                                    <v-tooltip bottom>
-                                        <template v-slot:activator="{ on }">
-                                            <v-btn icon v-on="on" class="mx-0" @click="openEdit(props.row)" slot="activator">
-                                                <v-icon small color="blue darken-2">edit</v-icon>
-                                            </v-btn>
-                                        </template>
-                                        <span>Edit</span>
-                                    </v-tooltip>
-                                    <v-tooltip bottom>
-                                        <template v-slot:activator="{ on }">
-                                            <v-btn icon v-on="on" class="mx-0" @click="openShow(props.row)" slot="activator">
-                                                <v-icon small color="blue darken-2">visibility</v-icon>
-                                            </v-btn>
-                                        </template>
-                                        <span>View user</span>
-                                    </v-tooltip>
-                                    <v-tooltip bottom>
-                                        <template v-slot:activator="{ on }">
-                                            <v-btn icon v-on="on" class="mx-0" @click="openPerm(props.row)" slot="activator">
-                                                <v-icon small color="orange darken-2">dialpad</v-icon>
-                                            </v-btn>
-                                        </template>
-                                        <span>Edit Permissions</span>
-                                    </v-tooltip>
-                                    <v-tooltip bottom>
-                                        <template v-slot:activator="{ on }">
-                                            <v-btn icon v-on="on" class="mx-0" @click="deleteItem(props.row)" slot="activator">
-                                                <v-icon small color="pink darken-2">delete</v-icon>
-                                            </v-btn>
-                                        </template>
-                                        <span>Delete</span>
-                                    </v-tooltip>
-                                </span>
-                                <span v-else>
-                                    {{props.formattedRow[props.column.field]}}
-                                </span>
-                            </template>
-                        </vue-good-table>
-                    </v-flex>
-                    <!-- users display -->
-                </div>
-            </v-layout>
-        </v-container>
-        <!-- <div v-show="loader" style="text-align: center; width: 100%;">
-            <v-progress-circular :width="3" indeterminate color="green" style="margin: 1rem"></v-progress-circular>
-        </div> -->
-        <v-sheet :color="`grey ${theme.isDark ? 'darken-2' : 'lighten-4'}`" class="px-3 pt-3 pb-3" v-show="loader">
-            <v-skeleton-loader class="mx-auto" max-width="900" type="table"></v-skeleton-loader>
-        </v-sheet>
-    </v-content>
+<v-content>
+    <v-container fluid fill-height>
+        <v-layout justify-center align-center wrap>
+            <v-flex sm12>
+                <v-card style="padding: 20px 0;">
+                    <el-breadcrumb separator-class="el-icon-arrow-right">
+                        <el-breadcrumb-item :to="{ path: '/' }">Dashboard</el-breadcrumb-item>
+                        <el-breadcrumb-item>Users</el-breadcrumb-item>
+                    </el-breadcrumb>
+                </v-card>
+            </v-flex>
+            <v-flex sm12>
+                <!-- <myFilter :form="form" :user="user" style></myFilter> -->
+            </v-flex>
+            <v-flex sm12>
+                <v-card style="padding: 10px 0;">
+                    <v-layout row>
+                        <v-flex sm1 style="margin-left: 10px;">
+                            <v-tooltip right>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn icon v-on="on" slot="activator" class="mx-0" @click="getUsers">
+                                        <v-icon color="blue darken-2" small>refresh</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Refresh</span>
+                            </v-tooltip>
+                        </v-flex>
+                        <v-flex sm2>
+                            <h3 style="margin-left: 30px !important;margin-top: 10px;">Users</h3>
+                        </v-flex>
+                        <v-flex offset-sm8 sm2>
+                            <v-btn color="info" @click="openCreate" text>Create User</v-btn>
+                        </v-flex>
+                    </v-layout>
+                </v-card>
+            </v-flex>
+            <v-flex sm12>
+                <v-pagination v-model="users.current_page" :length="users.last_page" total-visible="5" @input="next_page(users.path, users.current_page)" circle v-if="users.last_page > 1"></v-pagination>
+            </v-flex>
+            <v-flex sm12>
+                <vue-good-table class="table-hover" :columns="columns" :rows="users.data" :search-options="{ enabled: true }" :pagination-options="{enabled: true,mode: 'pages'}" v-loading="isLoading" :sort-options="{enabled: true, initialSortBy: {field: 'id', type: 'asc'}}">
+                    <template slot="table-row" slot-scope="props">
+                        <span v-if="props.column.field == 'created_at'">
+                            <span>
+                                <el-tag type="success">{{props.formattedRow.created_at}}</el-tag>
+                            </span>
+                        </span>
+                        <span v-else-if="props.column.field == 'actions'">
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn v-on="on" icon class="mx-0" @click="openEdit(props.row)" slot="activator">
+                                        <v-icon small color="blue darken-2">edit</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Edit {{ props.row.name }}</span>
+                            </v-tooltip>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn icon v-on="on" class="mx-0" @click="confirm_delete(props.row)" slot="activator">
+                                        <v-icon small color="pink darken-2">delete</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Delete {{ props.row.name }}</span>
+                            </v-tooltip>
+                        </span>
+                        <span v-else>{{ props.formattedRow[props.column.field] }}</span>
+                    </template>
+                </vue-good-table>
+            </v-flex>
+        </v-layout>
+    </v-container>
     <Create></Create>
     <Edit></Edit>
-    <PermUser></PermUser>
-    <UserProfile></UserProfile>
-    <DeletedUsers></DeletedUsers>
-</div>
+</v-content>
 </template>
 
 <script>
-import Create from "./Create.vue";
-import PermUser from './Permission.vue';
-import DeletedUsers from './DeletedUsers.vue';
-import Edit from "./Edit.vue";
-import UserProfile from './UserProfile'
+import Create from "./create";
+import Edit from "./edit";
+
 export default {
-    inject: ['theme'],
-    props: ["user"],
-    name: 'users',
+    props: ['user'],
     components: {
         Create,
-        PermUser,
         Edit,
-        UserProfile,
-        DeletedUsers
     },
     data() {
         return {
-            loading_t: false,
-
-            columns: [{
-                    label: 'Id#',
-                    field: 'id',
-                    type: 'number',
-                },
-                {
-                    label: 'User name',
-                    field: 'name',
-                },
-                {
-                    label: 'User Email',
-                    field: 'email',
-                },
-                {
-                    label: 'Phone Number',
-                    field: 'phone',
-                },
-                {
-                    label: 'Address',
-                    field: 'address',
-                },
-                {
-                    label: 'Created On',
-                    field: 'created_at',
-                    // type: 'date',
-                    // dateInputFormat: 'YYYY-MM-DD',
-                    // dateOutputFormat: 'MMM Do YYYY',
-                },
-                {
-                    label: 'Actions',
-                    field: 'actions',
-                },
-            ],
+            form: {},
             loader: false,
+            search: "",
+            user_det: {
+                data: []
+            },
+            user_search: [],
+            temp: "",
+            checkedRows: [],
+            columns: [{
+                    label: "Id#",
+                    field: "id",
+                    type: "number"
+                },
+                {
+                    label: "Name",
+                    field: "name"
+                },
+                {
+                    label: "Email",
+                    field: "email"
+                },
+                {
+                    label: "Status",
+                    field: "status"
+                },
+                {
+                    label: "Created On",
+                    field: "created_at",
+                    // type: "date",
+                    // dateInputFormat: "YYYY-MM-DD",
+                    // dateOutputFormat: "Do MMMM YYYY"
+                },
+                {
+                    label: "Actions",
+                    field: "actions",
+                    sortable: false
+                }
+            ]
         };
     },
     methods: {
-        openDeleted() {
-            eventBus.$emit('openDeletedEvent')
-        },
-        openAdd() {
-            if (!this.roles) {
-                this.getRoles()
-            }
-            eventBus.$emit('openCreateUserEvent')
-        },
-        openEdit(item) {
-            if (!this.roles) {
-                this.getRoles()
-            }
-            eventBus.$emit('openEditUserEvent', item)
-        },
-        openPerm(item) {
-            eventBus.$emit('permEvent', item)
-            var payload = {
-                model: 'filterusers',
-                update: 'updateUsersList',
-            }
-            this.$store.dispatch('getItems', payload)
-        },
-
-        openShow(item) {
+        openCreate() {
+            eventBus.$emit("openCreateUser");
 
         },
+        openEdit(data) {
+            eventBus.$emit("openEditUser", data);
+        },
 
-        deleteItem(item) {
-            this.$confirm('This will permanently delete ' + item.name +'. Continue?', 'Warning', {
+        confirm_delete(item) {
+            this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
                 confirmButtonText: 'OK',
                 cancelButtonText: 'Cancel',
-                type: 'warning',
-                center: true
+                type: 'warning'
             }).then(() => {
-                this.delete_user(item)
+                this.deleteItem(item)
             }).catch(() => {
                 this.$message({
                     type: 'error',
@@ -191,8 +151,9 @@ export default {
                 });
             });
         },
-        delete_user(item) {
-            this.$store.dispatch("deleteItem", "users/" + item.id).then(response => {
+
+        deleteItem(item) {
+            this.$store.dispatch("deleteItem", "user/" + item.id).then(response => {
                 this.$message({
                     type: 'success',
                     message: 'Delete completed'
@@ -200,80 +161,108 @@ export default {
                 this.getUsers();
             });
         },
+        openShow(data) {
+            eventBus.$emit("openShowUser", data);
+        },
         getUsers() {
             var payload = {
                 model: 'users',
-                update_list: 'updateUsersList',
+                update_list: 'updateUsersList'
+            }
+            this.$store.dispatch("getItems", payload);
+        },
+        getRoles() {
+            var payload = {
+                model: 'roles',
+                update_list: 'updateRoleList'
+            }
+            this.$store.dispatch("getItems", payload);
+        },
+        updateSelected(url) {
+            // alert('test')
+            if (this.checkedRows.length < 1) {
+                eventBus.$emit("errorEvent", "Please select atleast one row");
+                return;
             }
 
-            this.$store.dispatch('getItems', payload)
-                .then((response) => {
-                    this.loader = false
+            this.$store
+                .dispatch("updateSelected", {
+                    url,
+                    checked: this.checkedRows
                 })
+                .then(response => {
+                    eventBus.$emit("alertRequest", "Updated");
+                    this.checkedRows = [];
+                    this.getUsers();
+                });
+        },
+        selectionChanged(params) {
+            this.checkedRows = params.selectedRows;
         },
 
-        getRoles() {
-             var payload = {
-                model: 'roles',
-                update: 'updateRoleList',
+        next_page(path, page) {
+            var payload = {
+                path: path,
+                page: page,
+                update_list: 'updateUsersList'
             }
-
-            this.$store.dispatch('getItems', payload)
+            this.$store.dispatch("nextPage", payload);
         },
     },
     computed: {
         users() {
-            return this.$store.getters.users
+            return this.$store.getters.users;
         },
-        loading() {
+        isLoading() {
             return this.$store.getters.loading;
-        },
+        }
     },
     mounted() {
-        // this.loader = true;
+        // this.$store.dispatch('getUsers');
+        eventBus.$emit("LoadingEvent");
+        this.getRoles();
         this.getUsers();
     },
-    // beforeRouteEnter(to, from, next) {
-    //     next(vm => {
-    //         if (vm.user.can["view users"]) {
-    //             next();
-    //         } else {
-    //             next("/");
-    //         }
-    //     });
-    // },
-
     created() {
-        eventBus.$on('getUsersEvent', data => {
-            this.getUsers()
-        })
+        eventBus.$on("UserEvent", data => {
+            this.getUsers();
+        });
+
+        eventBus.$on("responseChooseEvent", data => {
+            console.log(data);
+            if (data == "Excel") {
+                eventBus.$emit("openEditUser");
+            } else {
+                eventBus.$emit("openCreateUser");
+            }
+        });
     },
+
+    //   beforeRouteEnter(to, from, next) {
+    //     next(vm => {
+    //       if (vm.user.can["view user"]) {
+    //         next();
+    //       } else {
+    //         next("/");
+    //       }
+    //     });
+    //   }
 };
 </script>
 
 <style scoped>
-.content--wrap {
-    margin-top: -100px;
+.el-input--prefix .el-input__inner {
+    border-radius: 50px !important;
 }
 
-#profile {
-    width: 70px;
-    height: 60px;
-    border-radius: 50%;
-    margin-left: 80px;
-    margin-top: -30px;
+.v-toolbar__content,
+.v-toolbar__extension {
+    height: auto !important;
 }
 
-i {
-    padding: 7px;
-    background: #f0f0f0;
-    border-radius: 50%;
-}
-
-.list-group-item:hover,
-.list-group-item:focus {
-    z-index: 1;
-    background: #f9f9f9;
-    text-decoration: none;
+.v-avatar {
+    height: 10px !important;
+    width: 10px !important;
+    margin-left: 40% !important;
 }
 </style>

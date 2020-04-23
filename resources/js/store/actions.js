@@ -10,56 +10,6 @@ export default {
         // context.commit('alertEvent', payload)
     },
 
-    // GET
-    getUsers(context) {
-        context.commit('loading', true)
-        return new Promise((resolve, reject) => {
-            axios.get('users').then((response) => {
-                context.commit('loading', false)
-                context.commit('updateUsersList', response.data)
-                resolve(response)
-            }).catch((error) => {
-                reject(error);
-                context.commit('loading', false)
-                if (error.response.status === 500) {
-                    eventBus.$emit('errorEvent', error.response.statusText)
-                    return
-                } else if (error.response.status === 401 || error.response.status === 409) {
-                    eventBus.$emit('reloadRequest', error.response.statusText)
-                } else if (error.response.status === 422) {
-                    eventBus.$emit('errorEvent', error.response.data.message + ': ' + error.response.statusText)
-                    context.commit('errors', error.response.data.errors)
-                    return
-                }
-                context.commit('errors', error.response.data.errors)
-            })
-        });
-    },
-
-    getRoles(context) {
-        context.commit('loading', true)
-        return new Promise((resolve, reject) => {
-            axios.get('roles').then((response) => {
-                context.commit('loading', false)
-                context.commit('updateRoleList', response.data)
-                resolve(response)
-            }).catch((error) => {
-                reject(error);
-                if (error.response.status === 500) {
-                    eventBus.$emit('errorEvent', error.response.statusText)
-                    return
-                } else if (error.response.status === 401 || error.response.status === 409) {
-                    eventBus.$emit('reloadRequest', error.response.statusText)
-                } else if (error.response.status === 422) {
-                    eventBus.$emit('errorEvent', error.response.data.message + ': ' + error.response.statusText)
-                    context.commit('errors', error.response.data.errors)
-                }
-                context.commit('loading', false)
-                context.commit('errors', error.response.data.errors)
-            });
-        })
-    },
-
     // Get items
     getItems(context, payload) {
         // console.log(payload);

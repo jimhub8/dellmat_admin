@@ -18,6 +18,7 @@ class CreateSkusTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->decimal('price')->nullable();
             $table->string('sku_no');
+            $table->text('description')->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('reorder_point')->nullable();
             $table->foreign('product_id')->references('id')->on('products') ->onDelete('cascade');

@@ -16,6 +16,12 @@
 
 <script>
     export default {
+        data() {
+            return {
+                api_key: process.env.MIX_ALGOLIA_APP_ID,
+                secret_key: process.env.MIX_ALGOLIA_SECRET,
+            }
+        },
         mounted() {
             console.log('Component mounted.')
         }

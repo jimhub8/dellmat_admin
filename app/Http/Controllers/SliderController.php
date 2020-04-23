@@ -50,7 +50,7 @@ class SliderController extends Controller
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
             // $image->image = '/storage/slider/' . $image_name;
-            $image->image = '/delstorage/pro_images/' . $image_name;
+            $image->image = '/delstorage/slider/' . $image_name;
             // $image->content = $request->content;
             $image->active = true;
             $image->save();

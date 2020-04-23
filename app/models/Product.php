@@ -6,11 +6,12 @@ use App\Scopes\SellerproductScope;
 use App\Seller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use SoftDeletes;
-    public $with = ['product_variants', 'skus', 'categories', 'brands', 'subcategories'];
+    use SoftDeletes, Searchable;
+    public $with = ['product_variants', 'skus', 'categories', 'brands', 'subcategories', 'images'];
     public function sales()
     {
         return $this->belongsToMany(Sale::class);

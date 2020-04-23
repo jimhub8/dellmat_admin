@@ -36,6 +36,8 @@ Route::group(['middleware' => ['authcheck']], function () {
     Route::resource('order_address', 'OrdershippingController');
     Route::resource('statuses', 'StatusController');
     Route::resource('withdrawals', 'WithdrawController');
+    Route::resource('product_options', 'OptionController');
+
 
     Route::post('status_update/{id}', 'StatusController@status_update')->name('status_update');
 
@@ -101,4 +103,8 @@ Route::group(['middleware' => ['authcheck']], function () {
     Route::any('week_total_sales_income', 'DashboardController@week_total_sales_income')->name('week_total_sales_income');
     Route::any('week_sold_items', 'DashboardController@week_sold_items')->name('week_sold_items');
     Route::any('week_orders', 'DashboardController@week_orders')->name('week_orders');
+
+
+
+
 });

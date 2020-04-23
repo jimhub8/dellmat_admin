@@ -83,12 +83,14 @@ class ProductController extends Controller
         $sku_values = $request->sku_values;
         $product = $request->product;
         // return $request->product['subcategories'];
-        Sku::updateOrCreate(
+        $sku = Sku::updateOrCreate(
             [
                 'sku_no' => $product['sku_no'],
             ],
             [
                 'price' => $sku_values['price'],
+                'description' => $product['description'],
+                // 'description' => ($sku_values['description']) ? $sku_values['description'] : $product['description'],
                 'quantity' => $sku_values['quantity'],
                 'product_id' => $id,
                 'reorder_point' => $sku_values['reorder_point'],
@@ -101,9 +103,8 @@ class ProductController extends Controller
         $relation->subcategory_fun($request->product['subcategories'], $update_product);
         $relation->brand_fun($request->product['brands'], $update_product);
         // return $update_product;
-        return 'success';
+        return $sku;
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -135,6 +136,7 @@ class ProductController extends Controller
                 if (count($product->skus) > 0) {
                     // dd(($product->skus[0]->price));
                     $product->sku_no = $product->skus[0]->sku_no;
+                    $product->description = $product->skus[0]->description;
                     $product->price = $product->skus[0]->price;
                     $product->quantity = $product->skus[0]->quantity;
                 }

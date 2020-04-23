@@ -19,6 +19,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $products = Product::paginate(20);
+        $transform_p = new ControllersProductController;
+        return $transform_p->transform_product($products);
+
 
         $setting = ProductSettings::first();
         $featured = unserialize($setting->featured);

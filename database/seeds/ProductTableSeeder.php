@@ -18,7 +18,7 @@ class ProductTableSeeder extends Seeder
         foreach (range(1, 50) as $index) {
             Product::create([
                 'user_id' => $faker->numberBetween($min = 1, $max = 2),
-                'vendor_id' => $faker->numberBetween($min = 1, $max = 4),
+                'vendor_id' => $faker->numberBetween($min = 1, $max = 2),
                 'product_name' => $faker->productName,
                 // 'description' => $faker->text,
                 // 'pos_status' => $faker->word,

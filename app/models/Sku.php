@@ -12,6 +12,7 @@ class Sku extends Model
         'sku_no',
         'price',
         'quantity',
+        'description',
         'reorder_point',
         'product_id',
     ];

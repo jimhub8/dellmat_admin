@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 import dashboard from './components/dashboard'
 
 import myUsers from './components/users'
-import MyRoles from './components/users/roles/Roles'
+import MyRoles from './components/users/roles'
 import myProducts from './components/product'
 // import myPos from './components/pos'
 import myClients from './components/clients'
@@ -30,6 +30,8 @@ import myCurrency from './components/settings/currency'
 import productOptions from './components/settings/products'
 import mySlider from './components/settings/slider'
 import myStatus from './components/settings/status'
+import myOptions from './components/settings/options'
+import myOptionValue from './components/settings/options/values'
 
 
 
@@ -58,6 +60,8 @@ const routes = [
     { path: '/currency', component: myCurrency },
     { path: '/product_option', component: productOptions },
     { path: '/slider', component: mySlider },
+    { path: '/options', component: myOptions },
+    { path: '/option_value', component: myOptionValue },
 ]
 
 

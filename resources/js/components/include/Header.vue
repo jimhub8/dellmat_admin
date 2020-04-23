@@ -48,6 +48,15 @@
                         </div>
                     </router-link>
 
+                    <router-link to="/vendors" class="v-list-item v-list-item--link theme--light" v-if="user.is_admin">
+                        <div class="v-list__tile__action">
+                            <v-icon>people</v-icon>
+                        </div>
+                        <div class="v-list-item__content">
+                            <div class="v-list-item__title">Vendors</div>
+                        </div>
+                    </router-link>
+
 
                     <router-link to="/withdraw" class="v-list-item v-list-item--link theme--light">
                         <div class="v-list__tile__action">
@@ -70,7 +79,7 @@
                                 <div class="v-list-item__title">Products</div>
                             </div>
                         </router-link>
-                        <router-link to="/menu" class="v-list-item v-list-item--link theme--light">
+                        <router-link to="/menu" class="v-list-item v-list-item--link theme--light" v-if="user.is_admin">
                             <div class="v-list__tile__action">
                                 <v-icon>gavel</v-icon>
                             </div>
@@ -78,7 +87,7 @@
                                 <div class="v-list-item__title">Menu</div>
                             </div>
                         </router-link>
-                        <router-link to="/category" class="v-list-item v-list-item--link theme--light">
+                        <router-link to="/category" class="v-list-item v-list-item--link theme--light" v-if="user.is_admin">
                             <div class="v-list__tile__action">
                                 <v-icon>gavel</v-icon>
                             </div>
@@ -86,7 +95,7 @@
                                 <div class="v-list-item__title">Categories</div>
                             </div>
                         </router-link>
-                        <router-link to="/subcategory" class="v-list-item v-list-item--link theme--light">
+                        <router-link to="/subcategory" class="v-list-item v-list-item--link theme--light" v-if="user.is_admin">
                             <div class="v-list__tile__action">
                                 <v-icon>gavel</v-icon>
                             </div>
@@ -95,7 +104,7 @@
                             </div>
                         </router-link>
 
-                        <router-link to="/brand" class="v-list-item v-list-item--link theme--light">
+                        <router-link to="/brand" class="v-list-item v-list-item--link theme--light" v-if="user.is_admin">
                             <div class="v-list__tile__action">
                                 <v-icon>branding_watermark</v-icon>
                             </div>
@@ -105,31 +114,7 @@
                         </router-link>
                     </v-list-group>
 
-                    <router-link to="/vendors" class="v-list-item v-list-item--link theme--light">
-                        <div class="v-list__tile__action">
-                            <v-icon>group</v-icon>
-                        </div>
-                        <div class="v-list-item__content">
-                            <div class="v-list-item__title">Vendors</div>
-                        </div>
-                    </router-link>
-                   <!--   <router-link to="/discount" class="v-list-item v-list-item--link theme--light">
-                        <div class="v-list__tile__action">
-                            <v-icon>indeterminate_check_box</v-icon>
-                        </div>
-                        <div class="v-list-item__content">
-                            <div class="v-list-item__title">Discounts</div>
-                        </div>
-                    </router-link>
-                    <router-link to="/drawer" class="v-list-item v-list-item--link theme--light">
-                        <div class="v-list__tile__action">
-                            <v-icon>card_travel</v-icon>
-                        </div>
-                        <div class="v-list-item__content">
-                            <div class="v-list-item__title">Cashier</div>
-                        </div>
-                    </router-link> -->
-                    <v-list-group prepend-icon="account_circle">
+                    <v-list-group prepend-icon="account_circle" v-if="user.is_admin">
                         <template v-slot:activator>
                             <v-list-item-title>Users</v-list-item-title>
                         </template>
@@ -151,7 +136,7 @@
                         </router-link>
                     </v-list-group>
 
-                    <v-list-group prepend-icon="settings">
+                    <v-list-group prepend-icon="settings" v-if="user.is_admin">
                         <template v-slot:activator>
                             <v-list-item-title>Settings</v-list-item-title>
                         </template>
@@ -172,6 +157,14 @@
                             </div>
                         </router-link>
 
+                        <router-link to="/slider" class="v-list-item v-list-item--link theme--light">
+                            <div class="v-list__tile__action">
+                                <v-icon>image</v-icon>
+                            </div>
+                            <div class="v-list-item__content">
+                                <div class="v-list-item__title">Slider</div>
+                            </div>
+                        </router-link>
                         <router-link to="/status" class="v-list-item v-list-item--link theme--light">
                             <div class="v-list__tile__action">
                                 <v-icon>money</v-icon>
@@ -180,6 +173,16 @@
                                 <div class="v-list-item__title">Status</div>
                             </div>
                         </router-link>
+
+                        <router-link to="/options" class="v-list-item v-list-item--link theme--light">
+                            <div class="v-list__tile__action">
+                                <v-icon>money</v-icon>
+                            </div>
+                            <div class="v-list-item__content">
+                                <div class="v-list-item__title">Product Variants</div>
+                            </div>
+                        </router-link>
+
                     </v-list-group>
                 </v-card>
             </template>

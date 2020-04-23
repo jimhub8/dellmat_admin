@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\User;
+use Bitfumes\Multiauth\Model\Permission;
+use Bitfumes\Multiauth\Model\Role;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller {
 
@@ -15,8 +15,16 @@ class RoleController extends Controller {
         return  $user->logged_user();
     }
 	public function index() {
-		return Role::all();
-
+        $roles = Role::all();
+        $roles->transform(function($role) {
+            foreach ($role->permissions as  $permission) {
+                $permissions[] = $permission['id'];
+            }
+            // dd($permissions);
+            $role->permissions_arr = $permissions;
+            return $role;
+        });
+        return $roles;
 	}
 
 	public function permissions()
@@ -26,8 +34,14 @@ class RoleController extends Controller {
 
 	public function store(Request $request)
 	{
-        $role = Role::create(['name' => $request->form['name']]);
-        $role->givePermissionTo($request->selected);
+
+        // dd($request->all());
+        $request->validate(['name' => 'required']);
+        $role = Role::create($request->all());
+        $role->addPermission($request->permissions);
+        // return $request->all();
+        // $role = Role::create(['name' => $request->name]);
+        // $role->addPermission($request->permissions);
 		return $role;
 	}
 
