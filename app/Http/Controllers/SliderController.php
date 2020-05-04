@@ -45,12 +45,10 @@ class SliderController extends Controller
         if ($request->hasFile('image')) {
             $img = $request->image;
 
-            $imagename = Storage::disk('dellmat')->put('slider', $img);
-            // $imagename = Storage::disk('public')->put('slider', $img);
+            $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            // $image->image = '/storage/slider/' . $image_name;
-            $image->image = '/delstorage/slider/' . $image_name;
+            $image->image = env('STORAGE_PATH') . '/slider/' . $image_name;
             // $image->content = $request->content;
             $image->active = true;
             $image->save();
@@ -77,9 +75,14 @@ class SliderController extends Controller
      * @param  \App\models\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Slider $slider)
+    public function update(Request $request, $id)
     {
+        $slider = Slider::find($id);
+        $slider->content = $request->content;
+        $slider->save();
 
+
+        return;
         // return $request->all();
         $image_file = $request->all();
         // dd($image_file);
@@ -120,8 +123,12 @@ class SliderController extends Controller
      * @param  \App\models\Slider  $slider
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Slider $slider)
+    public function destroy($id)
     {
-        //
+        // $slider = Slider::find($id);
+        // $image_path = $slider->image;
+        // dd(File::exists('/storage/slider/CfRztjxthHHxLiB3MnQJQrHFC4w6DcEyGSc6QcWl.jpeg'));
+        // File::delete($image_path);
+        Slider::find($id)->delete();
     }
 }

@@ -17,6 +17,7 @@ class OrdershippingController extends Controller
     public function show($id)
     {
         $shippingaddress_id = Ordershipping::find($id);
-        return Shippingaddress::find($id);
+        $shippingaddress_id = $shippingaddress_id->shippingaddress_id;
+        return Shippingaddress::find($shippingaddress_id);
     }
 }

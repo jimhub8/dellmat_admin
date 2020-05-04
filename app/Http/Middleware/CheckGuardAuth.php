@@ -16,7 +16,7 @@ class CheckGuardAuth
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard('admin')->check() ||Auth::guard('seller')->check() || Auth::guard('web')->check()) {
+        if (Auth::guard('admin')->check() ||Auth::guard('seller')->check()) {
             return $next($request);
         }
         return redirect('/login');

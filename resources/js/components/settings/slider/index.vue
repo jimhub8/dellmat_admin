@@ -46,6 +46,9 @@
                         <span v-else-if="props.column.field == 'image'">
                             <img :src="props.row.image" alt="">
                         </span>
+                        <span v-else-if="props.column.field == 'content'">
+                            <div v-html="props.row.content"></div>
+                        </span>
                         <span v-else-if="props.column.field == 'actions'">
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on }">
@@ -70,17 +73,19 @@
             </v-flex>
         </v-layout>
     </v-container>
-    <mySlider></mySlider>
+    <mySlider />
+    <myEdit />
 </v-content>
 </template>
 
 <script>
 import mySlider from "./Slider";
+import myEdit from "./Edit";
 
 export default {
     props: ['user'],
     components: {
-        mySlider,
+        mySlider,myEdit
     },
     data() {
         return {

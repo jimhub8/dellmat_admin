@@ -31,10 +31,19 @@ class ImageController extends Controller
                 $image_path = $image->image;
                 File::delete($image_path);
             }
-            $imagename = Storage::disk('public')->put('products', $img);
+
+
+            $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            $image->image = '/storage/products/' . $image_name;
+            $image->image = env('STORAGE_PATH') . '/slider/' . $image_name;
+
+            // $imagename = Storage::disk('public')->put('products', $img);
+            // $imgArr = explode('/', $imagename);
+            // $image_name = $imgArr[1];
+            // $image->image = '/storage/products/' . $image_name;
+
+
             $image->save();
             return $image;
         }
@@ -93,11 +102,18 @@ class ImageController extends Controller
                 $image_path = $image->image;
                 File::delete($image_path);
             }
-            $imagename = Storage::disk('dellmat')->put('products', $img);
-            // $imagename = Storage::disk('public')->put('products', $img);
+            // $imagename = Storage::disk('dellmat')->put('products', $img);
+            // $imgArr = explode('/', $imagename);
+            // $image_name = $imgArr[1];
+            // $image->image = '/delstorage/products/' . $image_name;
+
+
+            $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            $image->image = '/delstorage/products/' . $image_name;
+            $image->image = env('STORAGE_PATH') . '/slider/' . $image_name;
+
+
             // $image->image = '/storage/products/' . $image_name;
             // $image->image = env('APP_URL') . '/storage/products/' . $image_name;
             $image->display = true;
