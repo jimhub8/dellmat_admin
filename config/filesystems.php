@@ -69,6 +69,13 @@ return [
             'url' => env('AWS_URL'),
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'project_id' => env('GCE_PROJECT_ID'),
+            'key_file' => env('GCE_KEY_FILE'),
+            'bucket' => env('GCE_STORAGE_BUCKET'),
+        ],
+
     ],
 
 ];

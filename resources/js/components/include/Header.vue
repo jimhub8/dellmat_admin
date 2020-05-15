@@ -3,7 +3,7 @@
     <v-navigation-drawer v-model="drawer" :clipped="clipped" app>
 
         <v-list dense id="navigation">
-            <v-img :aspect-ratio="16/9" src="/storage/app/app_image.jpeg">
+            <v-img :aspect-ratio="16/9" src="/storage/app/app_image.jpeg" >
                 <v-layout pa-2 column fill-height class="lightbox white--text">
                     <v-spacer></v-spacer>
                     <v-flex shrink>
@@ -56,7 +56,6 @@
                             <div class="v-list-item__title">Vendors</div>
                         </div>
                     </router-link>
-
 
                     <router-link to="/withdraw" class="v-list-item v-list-item--link theme--light">
                         <div class="v-list__tile__action">
@@ -192,7 +191,7 @@
     <v-app-bar :clipped-left="clipped" app color="blue darken-3" dark>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-            <!-- <img src="/storage/logo.jpg" alt style="width: 130px; height: 60px;border-radius: 20px;"> -->
+            <img :src="logo" alt style="width: 130px; height: 60px;border-radius: 20px;" />
         </v-toolbar-title>
         <v-spacer />
         <!-- <Logout :user="user"></Logout> -->
@@ -250,6 +249,8 @@ export default {
             message: "Success",
             fullscreenLoading: false,
             icon: "",
+            logo: process.env.MIX_LOGO,
+            app_name: process.env.MIX_APP_NAME,
         };
     },
     methods: {
