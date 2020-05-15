@@ -13,8 +13,8 @@ class Image extends Model
 
     public function getImageAttribute($value)
     {
-        if (env('GCE_STORAGE_PATH') == 'gcs') {
-            return $this->attributes['image'] = env('GCE_STORAGE_PATH', 'https://storage.cloud.google.com/ecomerce_bucket') . $value;
-        }
+        // if (env('GCE_STORAGE_PATH') == 'gcs') {
+            return $this->attributes['image'] = env('GCE_STORAGE_PATH', 'https://storage.cloud.google.com/ecomerce_bucket') . $value  . '?authuser=1';
+        // }
     }
 }

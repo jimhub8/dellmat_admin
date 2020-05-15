@@ -111,12 +111,15 @@ class ImageController extends Controller
             $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            $image->image = env('STORAGE_PATH') . '/slider/' . $image_name;
+            // dd(env('STORAGE_PATH') . '/slider/' . $image_name);
+            $uploaded_img = env('STORAGE_PATH') . '/slider/' . $image_name;
+            $image->image = $uploaded_img;
+            $image->display = true;
 
+            // return $uploaded_img;
 
             // $image->image = '/storage/products/' . $image_name;
             // $image->image = env('APP_URL') . '/storage/products/' . $image_name;
-            $image->display = true;
             $image->save();
             return $image;
         }
