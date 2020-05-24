@@ -15,6 +15,14 @@
                                 <el-input placeholder="Product name" v-model="form.product_name"></el-input>
                             </div>
                         </v-flex>
+
+                        <v-flex sm12>
+                            <label for="">Vendor</label>
+                            <el-select v-model="form.seller_id" filterable placeholder="type at least 3 characters" :loading="loading" style="width: 100%">
+                                <el-option v-for="item in sellers.data" :key="item.id" :label="item.name" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </v-flex>
                     </v-layout>
                 </v-container>
             </v-card-text>
@@ -30,6 +38,7 @@
 
 <script>
 export default {
+    props: ['user'],
     data: () => ({
         dialog: false,
         loading: false,
@@ -50,7 +59,7 @@ export default {
     created() {
         eventBus.$on("openCreateProduct", data => {
             this.dialog = true;
-            this.$store.dispatch('getItems', ['suppliers', 'updateSupplierList'])
+            this.getSellers();
         });
     },
 
@@ -84,11 +93,34 @@ export default {
         },
         close() {
             this.dialog = false;
-        }
+        },
+
+        getSellers() {
+            var payload = {
+                model: '/seller/sellers',
+                update_list: 'updateSellerList',
+            }
+            this.$store.dispatch("getItems", payload);
+        },
+
+        // getVendors(search) {
+        //     // console.log(search);
+        //     if (search.length > 2) {
+        //         var payload = {
+        //             model: '/seller/sellers',
+        //             update_: 'updateClientList',
+        //             search: search
+        //         }
+        //         this.$store.dispatch("searchItems", payload);
+        //     }
+        // }
     },
     computed: {
-        suppliers() {
-            return this.$store.dispatch('suppliers')
+        sellers() {
+            return this.$store.getters.sellers;
+        },
+        loading() {
+            return this.$store.getters.loading;
         }
     },
 };

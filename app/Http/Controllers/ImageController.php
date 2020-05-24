@@ -36,7 +36,7 @@ class ImageController extends Controller
             $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            $image->image = env('STORAGE_PATH') . '/slider/' . $image_name;
+            $image->image = env('STORAGE_PATH') . '/products/' . $image_name;
 
             // $imagename = Storage::disk('public')->put('products', $img);
             // $imgArr = explode('/', $imagename);
@@ -108,11 +108,10 @@ class ImageController extends Controller
             // $image->image = '/delstorage/products/' . $image_name;
 
 
-            $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
+            $imagename = Storage::disk(env('STORAGE_DISK'))->put('products', $img);
             $imgArr = explode('/', $imagename);
             $image_name = $imgArr[1];
-            // dd(env('STORAGE_PATH') . '/slider/' . $image_name);
-            $uploaded_img = env('STORAGE_PATH') . '/slider/' . $image_name;
+            $uploaded_img = env('STORAGE_PATH') . '/products/' . $image_name;
             $image->image = $uploaded_img;
             $image->display = true;
 

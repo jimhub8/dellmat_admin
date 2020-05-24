@@ -173,9 +173,6 @@ export default {
         }
     },
     computed: {
-        suppliers() {
-            return this.$store.dispatch('suppliers')
-        },
 
         groups() {
             return this.$store.getters.groups;

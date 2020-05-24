@@ -39,11 +39,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         $product = new Product();
         // $product->description = $request->description;
 
         if (Auth::guard('seller')->check()) {
             $seller_id = Auth::guard('seller')->id();
+            $this->logged_user()->id;
+            $user_id = 0;
+        } elseif (Auth::guard('admin')) {
+            $seller_id = $request->seller_id;
             $this->logged_user()->id;
             $user_id = 0;
         }
@@ -80,6 +85,9 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         // return $request->all();
+        // $request->validate([
+        //     'description' => 'required'
+        // ]);
         $sku_values = $request->sku_values;
         $product = $request->product;
         // return $request->product['subcategories'];

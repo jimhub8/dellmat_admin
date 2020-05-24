@@ -113,7 +113,7 @@
             </v-flex>
         </v-layout>
     </v-container>
-    <Create></Create>
+    <Create :user="user"></Create>
     <myImage></myImage>
     <myShow></myShow>
 </v-content>
