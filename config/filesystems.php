@@ -76,6 +76,23 @@ return [
             'bucket' => env('GCE_STORAGE_BUCKET'),
         ],
 
+        'google' => [
+            'driver' => 'google',
+            'clientId' => env('GOOGLE_DRIVE_CLIENT_ID'),
+            'clientSecret' => env('GOOGLE_DRIVE_CLIENT_SECRET'),
+            'refreshToken' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
+            'folderId' => env('GOOGLE_DRIVE_FOLDER_ID'),
+        ],
+
+        'spaces' => [
+            'driver' => 's3',
+            'key' => env('DO_SPACES_KEY'),
+            'secret' => env('DO_SPACES_SECRET'),
+            'endpoint' => env('DO_SPACES_ENDPOINT'),
+            'region' => env('DO_SPACES_REGION'),
+            'bucket' => env('DO_SPACES_BUCKET'),
+        ],
+
     ],
 
 ];

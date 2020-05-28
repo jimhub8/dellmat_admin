@@ -11,6 +11,18 @@
 |
 */
 
+Route::get('upload', function() {
+    $files = Storage::disk('spaces')->files('uploads');
+
+    return view('upload', compact('files'));
+});
+
+Route::post('upload', function() {
+    Storage::disk('spaces')->putFile('uploads', request()->file, 'public');
+
+    return redirect()->back();
+});
+
 Auth::routes(['verify' => true]);
 
 Auth::routes();
@@ -107,4 +119,10 @@ Route::group(['middleware' => ['authcheck']], function () {
 
 
 
+});
+
+
+Route::get('passport', function() {
+
+    return view('passport.index');
 });

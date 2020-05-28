@@ -7,6 +7,8 @@ use App\models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Dropbox\Client;
+use Dropbox\WriteMode;
 
 class ImageController extends Controller
 {
@@ -81,47 +83,43 @@ class ImageController extends Controller
      */
     public function images(Request $request, $id)
     {
-        $image_file = $request->all();
-        // dd($image_file);
-        $image = Image::where('product_id', $id)->where('display', 1)->first();
-        if (!$image) {
-            $image = new Image();
-        }
-        if ($image) {
-            $image_display = Image::where('product_id', $id)->where('display', 1)->get();
-            foreach ($image_display as  $image_update) {
-                $image_update->display = false;
-                $image_update->save();
+        // dd(Storage::disk(env('STORAGE_DISK'))->delete('/swap/products/1MniNbpPc6XXwZJkbxQ8Sriuz2X66EjR42E3FK8x.jpeg'));
+        // return ;
+        
+        // return $request->all();
+        // dd($image);
+       
+        if ($request->hasFile('image')) { 
+            $image = Image::where('product_id', $id)->where('display', 1)->first();
+            if (!$image) {
+                $image_file = $request->all();
+                $image = new Image();
+            } else {
+                $image_display = Image::where('product_id', $id)->where('display', 1)->get();
+                foreach ($image_display as  $image_update) {
+                    $image_update->display = false;
+                    $image_update->save();
+                }
+                $file_arr = explode('.com',$image->image);
+                $image_path = $file_arr[1];
+                // dd($file_arr);
+                if (Storage::disk(env('STORAGE_DISK'))->exists($image_path)) {
+                    $image_path = $image->image;
+                    Storage::disk(env('STORAGE_DISK'))->delete($image_path);
+                }
             }
-        }
         $image->product_id = $id;
-        if ($request->hasFile('image')) {
+
             $img = $request->image;
-            if (File::exists($image->image)) {
-                // dd($image->image);
-                $image_path = $image->image;
-                File::delete($image_path);
-            }
-            // $imagename = Storage::disk('dellmat')->put('products', $img);
-            // $imgArr = explode('/', $imagename);
-            // $image_name = $imgArr[1];
-            // $image->image = '/delstorage/products/' . $image_name;
-
-
-            $imagename = Storage::disk(env('STORAGE_DISK'))->put('products', $img);
+            $imagename = Storage::disk(env('STORAGE_DISK'))->putFile('swap/products', $img, 'public');
             $imgArr = explode('/', $imagename);
-            $image_name = $imgArr[1];
-            $uploaded_img = env('STORAGE_PATH') . '/products/' . $image_name;
+            $image_name = $imgArr[2];
+            $uploaded_img = env('STORAGE_PATH') . 'swap/products/' . $image_name;
             $image->image = $uploaded_img;
             $image->display = true;
-
-            // return $uploaded_img;
-
-            // $image->image = '/storage/products/' . $image_name;
-            // $image->image = env('APP_URL') . '/storage/products/' . $image_name;
             $image->save();
             return $image;
-        }
+    }
         return 'error';
     }
 
@@ -151,5 +149,24 @@ class ImageController extends Controller
             $upload->save();
             return $upload;
         }
+    }
+
+
+    public function dropboxFileUpload()
+    {
+        $Client = new Client(env('DROPBOX_TOKEN'), env('DROPBOX_SECRET'));
+
+
+        $file = fopen(public_path('img/admin.png'), 'rb');
+        $size = filesize(public_path('img/admin.png'));
+        $dropboxFileName = '/myphoto4.png';
+
+
+        $Client->uploadFile($dropboxFileName,WriteMode::add(),$file, $size);
+        $links['share'] = $Client->createShareableLink($dropboxFileName);
+        $links['view'] = $Client->createTemporaryDirectLink($dropboxFileName);
+
+
+        print_r($links);
     }
 }

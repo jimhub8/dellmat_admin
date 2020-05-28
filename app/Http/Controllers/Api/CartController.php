@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
+
 
 use App\models\CouponSession;
 use App\models\Product;
 use App\models\ProductAttribute;
 use App\models\Sku;
-use App\Http\Controllers\Controller;
 use Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -44,6 +45,7 @@ class CartController extends Controller
                 $request->choices
             )
         ]);
+        return $this->getCart();
     }
     public function update_cart(Request $request, $id)
     {
@@ -71,7 +73,7 @@ class CartController extends Controller
     }
     public function getCart()
     {
-        $cart_d =  Cart::getContent();
+        return $cart_d =  Cart::getContent();
         foreach ($cart_d as $cart) {
             $sku = Sku::where('id', (int) $cart->id)->first('product_id');
             // return $sku;

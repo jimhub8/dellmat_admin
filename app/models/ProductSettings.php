@@ -20,16 +20,31 @@ class ProductSettings extends Model
     }
 
 
+    // public function getFeaturedAttribute($value)
+    // {
+    //     $this->attributes['featured'] = unserialize($value);
+    // }
+    // public function getNewproductAttribute($value)
+    // {
+    //     $this->attributes['newproduct'] = unserialize($value);
+    // }
+    // public function getBestsellersAttribute($value)
+    // {
+    //     $this->attributes['bestsellers'] = unserialize($value);
+    // }
+
+
+
     public function getFeaturedAttribute($value)
     {
-        $this->attributes['featured'] = unserialize($value);
+       return unserialize($value);
     }
     public function getNewproductAttribute($value)
     {
-        $this->attributes['newproduct'] = unserialize($value);
+       return unserialize($value);
     }
     public function getBestsellersAttribute($value)
     {
-        $this->attributes['bestsellers'] = unserialize($value);
+       return unserialize($value);
     }
 }

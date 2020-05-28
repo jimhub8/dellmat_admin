@@ -19,7 +19,9 @@
         "laravel/scout": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
         "mbezhanov/faker-provider-collection": "^1.2",
+        "nao-pon/flysystem-google-drive": "~1.1",
         "superbalist/flysystem-google-storage": "^7.2"
     },
 

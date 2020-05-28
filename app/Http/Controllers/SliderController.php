@@ -45,10 +45,13 @@ class SliderController extends Controller
         if ($request->hasFile('image')) {
             $img = $request->image;
 
-            $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
+
+            $imagename = Storage::disk(env('STORAGE_DISK'))->putFile('swap/slider', $img, 'public');
+
+            // $imagename = Storage::disk(env('STORAGE_DISK'))->put('slider', $img);
             $imgArr = explode('/', $imagename);
-            $image_name = $imgArr[1];
-            $image->image = env('STORAGE_PATH') . '/slider/' . $image_name;
+            $image_name = $imgArr[2];
+            $image->image = env('STORAGE_PATH') . 'swap/slider/' . $image_name;
             // $image->content = $request->content;
             $image->active = true;
             $image->save();
