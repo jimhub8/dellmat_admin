@@ -32,7 +32,7 @@ class SaleController extends Controller
             $sale_id[] = $sale->sale_id;
         }
 
-        $sale_data = Sale::whereIn('id', $sale_id)->paginate(500);
+        return $sale_data = Sale::whereIn('id', $sale_id)->paginate(500);
 
         $sale_data->transform(function($sale) {
             $sale->discount = ($sale->discount != null) ? $sale->discount : 0;
@@ -43,7 +43,7 @@ class SaleController extends Controller
             $sale->sub_total = $sale->sub_total;
             $sale->total = $sale->sub_total - $sale->discount;
             // $sale->client_name = $sale->client;
-            $sale->client_name = $sale->user->name;
+            // $sale->client_name = $sale->user->name;
             return $sale;
         });
         return $sale_data;

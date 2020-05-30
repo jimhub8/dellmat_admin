@@ -42,8 +42,8 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function showLoginForm()
-    // {
-    //     return view('seller.auth.login');
-    // }
+    public function showLoginForm()
+    {
+        return view('seller.auth.login');
+    }
 }

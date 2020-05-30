@@ -2,11 +2,12 @@
 
 namespace App\models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
 {
-    public $with = ['products', 'ordershipping'];
+    public $with = ['products', 'ordershipping', 'user'];
      /**
      * The users that belong to the role.
      */
@@ -24,12 +25,12 @@ class Sale extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo(User::class);
     }
-    public function drawer()
-    {
-        return $this->belongsTo('App\models\Drawer');
-    }
+    // public function drawer()
+    // {
+    //     return $this->belongsTo('App\models\Drawer');
+    // }
 
     public function ordershipping()
     {
