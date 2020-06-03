@@ -104,7 +104,7 @@ class VariantController extends Controller
 
         $variants = $request->variants;
         $product_variants = ProductVariant::updateOrCreate(
-            ['product_id' => $id],
+            ['product_id' => $id]
         );
         $option_value_id_arr = [];
 
@@ -114,7 +114,7 @@ class VariantController extends Controller
             $option_id = $option_id->id;
             $option_arr[] = $option_id;
             $product_option = ProductOption::updateOrCreate(
-                ['product_id' => $id, 'option_id' => $option_id],
+                ['product_id' => $id, 'option_id' => $option_id]
             );
 
             foreach ($variant['tags'] as $key => $tag) {
@@ -136,7 +136,7 @@ class VariantController extends Controller
                         'option_value_option_id' =>  $option_value_option_id,
                         'product_option_id' =>  $product_option_id,
                         'option_value_id' =>  $option_value_id,
-                    ],
+                    ]
                 );
             }
         }
