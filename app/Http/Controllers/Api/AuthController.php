@@ -82,7 +82,7 @@ class AuthController extends Controller
             return response()->json([
             'message' => 'Unauthorized'
         ], 401);
-        $user = auth('api')->user();
+        $user = Auth::user();
         // $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -119,10 +119,10 @@ class AuthController extends Controller
     public function user(Request $request)
     {
         // return ($request->all());
-        // $user = User::first();
+        //  $user = User::first();
         $user = auth('api')->user();
         // $user = response()->json($request->user());
-        $user->image = 'http://192.168.43.81:82/profile/jim_profile.jpeg';
+//        $user->image = 'http://192.168.43.81:82/profile/jim_profile.jpeg';
         return $user = response()->json($user);
     }
 
