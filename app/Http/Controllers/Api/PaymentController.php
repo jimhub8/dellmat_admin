@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\Mail\ThankYou;
 use Illuminate\Http\Request;
@@ -35,7 +35,7 @@ class PaymentController extends Controller
     {
         // dd($address);
         $shippingaddress = Shippingaddress::firstOrCreate(
-            ['user_id' => Auth::id()],
+            ['user_id' => auth('api')->id()],
             [
                 'name' => (array_key_exists('name', $address)) ?$address['name'] : null,
                 'street_address' => (array_key_exists('street_address', $address)) ?$address['street_address'] : null,
@@ -192,8 +192,8 @@ class PaymentController extends Controller
 
 
         // $order = new Order;
-        // $order->buyer_id = Auth::id();
-        // // $order->buyer_id = Auth::id();
+        // $order->buyer_id = auth('api')->id();
+        // // $order->buyer_id = auth('api')->id();
         // $order->payment_id = $payment->id;
 
         // // foreach ($cart as $product) {
@@ -202,14 +202,14 @@ class PaymentController extends Controller
         // $order->address = 'Nairobi';
         // $order->status = 'Payed';
         // $order->amount = $amount->total;
-        // $order->name = Auth::user()->name;
+        // $order->name = auth('api')->user()->name;
         // $order->cart = serialize($this->getCart());
         // $order->paypal = serialize($payment);
-        // // $orderSave = Auth::user()->orders()->save();
+        // // $orderSave = auth('api')->user()->orders()->save();
         // $order->save();
         // $cart = $this->getCart();
         // // $this->getCartProduct();
-        // $user = Auth::user();
+        // $user = auth('api')->user();
         // // $this->sales('Payed', 'test');
 
         // $sale_update = new Sale_update();
@@ -277,10 +277,10 @@ class PaymentController extends Controller
 
 
 
-        $user = Auth::user();
+        $user = auth('api')->user();
         $order = new Order;
-        $order->buyer_id = Auth::id();
-        // $order->buyer_id = Auth::id();
+        $order->buyer_id = auth('api')->id();
+        // $order->buyer_id = auth('api')->id();
         $payment_id = new AutoGenerate;
         $order->payment_id = $payment_id->randomPaymentId();
         // foreach ($cart as $product) {
@@ -340,7 +340,7 @@ class PaymentController extends Controller
             foreach ($cart as $product) {
                 $sales = new Sale;
                 $sales->product_id = $product->id;
-                $sales->user_id = Auth::id();
+                $sales->user_id = auth('api')->id();
                 $sales->company_id = $product->company_id;
                 $sales->list_price = $product->list_price;
                 $sales->price = $product->price;
@@ -360,10 +360,10 @@ class PaymentController extends Controller
             }
         } else {
             foreach ($cart as $product) {
-                $user = Auth::user();
+                $user = auth('api')->user();
                 $sales = new Sale;
                 $sales->product_id = $product->id;
-                $sales->user_id = Auth::id();
+                $sales->user_id = auth('api')->id();
                 $sales->company_id = $product->company_id;
                 $sales->list_price = $product->list_price;
                 $sales->price = $product->price;

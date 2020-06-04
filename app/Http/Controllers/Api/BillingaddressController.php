@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\models\Billingaddress;
 use App\User;
@@ -30,7 +30,7 @@ class BillingaddressController extends Controller
     public function store(Request $request)
     {
         $billingaddress = Billingaddress::firstOrCreate(
-            ['user_id' => Auth::id()],
+            ['user_id' => auth('api')->id()],
             [
                 'name' => $request->name,
                 'country' => $request->country,
@@ -43,7 +43,7 @@ class BillingaddressController extends Controller
             ]
         );
         // $billingaddress = new Billingaddress;
-        // $billingaddress->user_id = Auth::id();
+        // $billingaddress->user_id = auth('api')->id();
         // $billingaddress->name = $request->name;
         // $billingaddress->street_address = $request->street_address;
         // $billingaddress->town = $request->town;
@@ -62,7 +62,7 @@ class BillingaddressController extends Controller
      */
     public function show($id)
     {
-        return Auth::user()->billing;
+        return auth('api')->user()->billing;
     }
 
     /**
@@ -74,8 +74,8 @@ class BillingaddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // return Auth::id();
-        $billingaddress = User::find($id)->billing;
+        // return auth('api')->id();
+        $billingaddress = User::find(auth('api')->id())->billing;
         // return $billingaddress;
         if ($billingaddress) {
             $billingaddress = Billingaddress::where('user_id', $id)->first();
@@ -84,7 +84,7 @@ class BillingaddressController extends Controller
 
         }
 
-        // $user = Auth::user();
+        // $user = auth('api')->user();
         // $user->attach()->billing();
 
 

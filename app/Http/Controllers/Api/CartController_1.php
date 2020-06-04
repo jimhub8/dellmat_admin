@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\models\CouponSession;
 use App\models\Product;
@@ -37,8 +37,8 @@ class CartController_1 extends Controller
         $sku_id = $sku_id->id;
         // return $sku_id;
 
-        if (Auth::check()) {
-            Cart::session(Auth::id())->add([
+        if (auth('api')->check()) {
+            Cart::session(auth('api')->id())->add([
                 'id' => $sku_id,
                 'name' => $product,
                 'quantity' => $request->order_qty,
@@ -71,8 +71,8 @@ class CartController_1 extends Controller
         // return $sku_id;
 
         $quantity = $request->order_qty;
-        if (Auth::check()) {
-            $cart_available = Cart::session(Auth::id())->get($id);
+        if (auth('api')->check()) {
+            $cart_available = Cart::session(auth('api')->id())->get($id);
         } else {
             $cart_available = Cart::get($id);
 
@@ -83,8 +83,8 @@ class CartController_1 extends Controller
         }
         // dd($quantity);
 
-        if (Auth::check()) {
-            Cart::session(Auth::id())->update($id, ['quantity' => $quantity]);
+        if (auth('api')->check()) {
+            Cart::session(auth('api')->id())->update($id, ['quantity' => $quantity]);
         } else {
             Cart::update($id, ['quantity' => $quantity]);
         }
@@ -93,16 +93,16 @@ class CartController_1 extends Controller
 
     public function flashCart($id)
     {
-        if (Auth::check()) {
-            Cart::session(Auth::id())->remove($id);
+        if (auth('api')->check()) {
+            Cart::session(auth('api')->id())->remove($id);
         } else {
             Cart::remove($id);
         }
     }
     public function getCart()
     {
-        if (Auth::check()) {
-            return $cart_d =  Cart::session(Auth::id())->getContent();
+        if (auth('api')->check()) {
+            return $cart_d =  Cart::session(auth('api')->id())->getContent();
         } else {
             $cart_d =  Cart::getContent();
         }
@@ -179,8 +179,8 @@ class CartController_1 extends Controller
 
     public function cart_total()
     {
-        if (Auth::check()) {
-            return $cart = Cart::session(Auth::id())->getSubTotal();
+        if (auth('api')->check()) {
+            return $cart = Cart::session(auth('api')->id())->getSubTotal();
         } else {
             return $cart = Cart::getSubTotal();
         }
@@ -188,8 +188,8 @@ class CartController_1 extends Controller
 
     public function cart_count()
     {
-        if (Auth::check()) {
-            $cart_d =  Cart::session(Auth::id())->getContent();
+        if (auth('api')->check()) {
+            $cart_d =  Cart::session(auth('api')->id())->getContent();
         } else {
             $cart_d =  Cart::getContent();
         }

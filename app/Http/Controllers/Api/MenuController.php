@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\models\Menu;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ class MenuController extends Controller
 
         $menu = new Menu;
         $menu->menu = $request->menu;
-        $menu->user_id = Auth::id();
+        $menu->user_id = auth('api')->id();
         $menu->save();
         return $menu;
     }

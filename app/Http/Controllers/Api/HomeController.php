@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
@@ -14,8 +14,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        if (Auth::check()) {
-            $auth_user = Auth::user();
+        if (auth('api')->check()) {
+            $auth_user = auth('api')->user();
             // dd($auth_user);
             return view('welcome', compact('auth_user'));
         }
@@ -34,19 +34,19 @@ class HomeController extends Controller
     public function ecommerce()
     {
         //  dd($carts = Session::get('coupon')); die;
-        if (Auth::check()) {
+        if (auth('api')->check()) {
             $permissions = [];
             foreach (Permission::all() as $permission) {
-                if (Auth::user()->can($permission->name)) {
+                if (auth('api')->user()->can($permission->name)) {
                     $permissions[$permission->name] = true;
                 } else {
                     $permissions[$permission->name] = false;
                 }
             }
-            $user = Auth::user();
+            $user = auth('api')->user();
 
             $auth_user = Arr::prepend($user->toArray(), $permissions, 'can');
-            $user = Auth::user();
+            $user = auth('api')->user();
             return view('welcome', compact('auth_user'));
         } else {
             return view('welcome');
@@ -58,21 +58,21 @@ class HomeController extends Controller
         //     $user->country_name = $country->name;
         //     return $user;
         // });
-        // dd(json_decode(json_encode((Auth::user()), false)));
+        // dd(json_decode(json_encode((auth('api')->user()), false)));
     }
     public function admin()
     {
         $permissions = [];
         foreach (Permission::all() as $permission) {
-            if (Auth::user()->can($permission->name)) {
+            if (auth('api')->user()->can($permission->name)) {
                 $permissions[$permission->name] = true;
             } else {
                 $permissions[$permission->name] = false;
             }
         }
-        $user = Auth::user();
+        $user = auth('api')->user();
 
-        $company_id = Auth::user()->company_id;
+        $company_id = auth('api')->user()->company_id;
         $company = Company::find($company_id);
         // $country = Country::find($user->country_id);
         // // dd($country);
@@ -82,7 +82,7 @@ class HomeController extends Controller
         //     $user->country_name = $country->name;
         //     return $user;
         // });
-        // dd(json_decode(json_encode((Auth::user()), false)));
+        // dd(json_decode(json_encode((auth('api')->user()), false)));
         $auth_user = array_prepend($user->toArray(), $permissions, 'can');
         return view('admin.admin', compact('auth_user', 'company'));
         // return redirect('/')->where('name', '[A-Za-z]+');

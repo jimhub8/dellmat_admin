@@ -177,6 +177,9 @@ return [
         App\Providers\GoogleStorageServiceProvider::class,
 
         App\Providers\GoogleDriveServiceProvider::class,
+
+        Darryldecode\Cart\CartServiceProvider::class
+
     ],
 
     /*
@@ -228,6 +231,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class
     ],
 
 ];

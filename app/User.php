@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\models\Billingaddress;
+use App\models\Shippingaddress;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +17,7 @@ use Laravel\Passport\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, SoftDeletes, HasApiTokens;
+    public $with = ['billing', 'shipping'];
 
     /**
      * The attributes that are mass assignable.
@@ -68,6 +71,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany('App\models\Drawer');
     }
 
+    public function billing()
+    {
+        return $this->hasOne(Billingaddress::class);
+    }
+    public function shipping()
+    {
+        return $this->hasOne(Shippingaddress::class);
+    }
+
+    public function wishes()
+    {
+        return $this->hasMany(wish::class);
+    }
     public function logged_user()
     {
         if (Auth::check()) {

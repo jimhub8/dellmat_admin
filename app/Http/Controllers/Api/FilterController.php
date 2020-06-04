@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
+
 use App\Http\Controllers\Controller;
-
-
+use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use App\models\Product;
 use Illuminate\Support\Facades\Session;

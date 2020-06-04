@@ -4,9 +4,11 @@ namespace App\models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sale extends Model
 {
+    use SoftDeletes;
     public $with = ['products', 'ordershipping', 'user'];
      /**
      * The users that belong to the role.

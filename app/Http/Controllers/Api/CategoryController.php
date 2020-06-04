@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
+
 use App\Http\Controllers\Controller;
-
-
+use App\Http\Controllers\ProductController;
 use App\models\Category;
 use App\models\CategoryProduct;
 use App\models\Product;
@@ -19,7 +19,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('products')->paginate();
+        $categories = Category::with(['products' => function($query) {
+            $query->setEagerLoads([])->take(2);
+        }])->paginate(10);
         return $this->transform_cat($categories);
     }
 
@@ -44,7 +46,7 @@ class CategoryController extends Controller
         $products_a = Product::whereIn('id', $products)->paginate();
         // dd(DB::getQueryLog()); // Show results of log
         $prod_trans = new ProductController;
-        return $prod_trans->transform_product($products_a);
+        return $prod_trans->transform_product($products_a, '');
     }
 
     public function transform_cat($categories)

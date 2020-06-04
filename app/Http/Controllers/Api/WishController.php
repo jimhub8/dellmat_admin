@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\models\wish;
 use Illuminate\Http\Request;
@@ -30,7 +30,7 @@ class WishController extends Controller
     {
         $wish = Wish::firstOrCreate([
             [
-                'user_id' => Auth::id(),
+                'user_id' => auth('api')->id(),
                 'product_id' => $request->id,
             ],
 
@@ -60,7 +60,7 @@ class WishController extends Controller
 
         $wish = Wish::firstOrCreate([
             [
-                'user_id' => Auth::id(),
+                'user_id' => auth('api')->id(),
                 'product_id' => $id,
             ],
         ]);

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\models\Shippingaddress;
 use App\User;
@@ -29,8 +29,9 @@ class ShippingaddressController extends Controller
      */
     public function store(Request $request)
     {
-        $shippingaddress = Shippingaddress::firstOrCreate(
-            ['user_id' => Auth::id()],
+        // return auth('api')->user();
+        return $shippingaddress = Shippingaddress::firstOrCreate(
+            ['user_id' => auth('api')->id()],
             [
                 'name' => $request->name,
                 'street_address' => $request->street_address,
@@ -52,7 +53,7 @@ class ShippingaddressController extends Controller
      */
     public function show($id)
     {
-        return Auth::user()->shipping;
+        return auth('api')->user()->shipping;
 
     }
 
@@ -66,7 +67,8 @@ class ShippingaddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $shippingaddress = User::find($id)->shipping;
+        // return auth('api')->id()
+        $shippingaddress = User::find(auth('api')->id())->shipping;
         // return $shippingaddress;
         if ($shippingaddress) {
             $shippingaddress = Shippingaddress::where('user_id', $id)->first();

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
+
 use App\Http\Controllers\Controller;
-
-
+use App\Http\Controllers\ProductController;
 use App\models\CouponSession;
 use App\models\Product;
 use App\models\ProductAttribute;
@@ -50,8 +50,9 @@ class CartController extends Controller
     public function update_cart(Request $request, $id)
     {
         // return $request->all();
-
-        $sku_id = Sku::where('sku_no', $request->name['sku_no'])->first('id');
+        $cart_item = $request->cart;
+        // return $cart_item['name']['sku_no'];
+        $sku_id = Sku::where('sku_no', $cart_item['name']['sku_no'])->first('id');
         $sku_id = $sku_id->id;
 
         // return $sku_id;
@@ -147,8 +148,31 @@ class CartController extends Controller
 
     public function cart_total()
     {
-        return $cart = Cart::getSubTotal();
-        return str_replace(',', '', $cart);
+        $total = 0;
+        $items = Cart::getContent();
+        // dd($items);
+        // return  $item->getPriceSum();
+
+        foreach ($items as $item) {
+
+            $item->id; // the Id of the item
+            $item->name; // the name
+            $item->price; // the single price without conditions applied
+            $total += $item->getPriceSum(); // the subtotal without conditions applied
+            $item->getPriceWithConditions(); // the single price with conditions applied
+            $item->getPriceSumWithConditions(); // the subtotal with conditions applied
+            $item->quantity; // the quantity
+            $item->attributes; // the attributes
+            // if ($item->attributes->has('size')) {
+            //     // item has attribute size
+            // } else {
+            //     // item has no attribute size
+            // }
+        }
+        return $total;
+
+        // return $cart = Cart::getSubTotal();
+        // return str_replace(',', '', $cart);
     }
 
     public function cart_count()

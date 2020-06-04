@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
+
 use App\Http\Controllers\Controller;
-
-
+use App\Http\Controllers\ProductController;
 use App\models\Product;
 use App\models\Subcategory;
 use App\models\SubcategoryProduct;
@@ -42,7 +42,7 @@ class SubcategoryController extends Controller
         $products_a = Product::whereIn('id', $products)->paginate();
         // dd(DB::getQueryLog()); // Show results of log
         $prod_trans = new ProductController;
-        return $prod_trans->transform_product($products_a);
+        return $prod_trans->transform_product($products_a, '');
     }
 
     /**

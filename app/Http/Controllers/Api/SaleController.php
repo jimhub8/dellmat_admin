@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\models\AutoGenerate;
 use App\models\Drawer;
@@ -24,8 +24,8 @@ class SaleController extends Controller
      */
     public function index()
     {
-
-        $sales = Sale::where('client_id', Auth::id())->paginate(500);
+        // return $request->all();
+        $sales = Sale::where('client_id', auth('api')->id())->paginate(500);
         $sales->transform(function ($sale) {
             // $sale->discount = ($sale->discount != null) ? $sale->discount : 0;
             // $total = 0;
@@ -35,7 +35,7 @@ class SaleController extends Controller
             $sale->sub_total = $sale->sub_total;
             $sale->total = $sale->sub_total - $sale->discount;
             // $sale->client_name = $sale->client->name;
-            $sale->user = Auth::user();
+            $sale->user = auth('api')->user();
             return $sale;
         });
         return $sales;
@@ -49,7 +49,7 @@ class SaleController extends Controller
      */
     public function sale($carts, $method, $payment, $data)
     {
-        // $client_id = Auth::id();
+        // $client_id = auth('api')->id();
         $client_id = 1;
         // $total_price = $this->cart_total();
         $total_price = 2000;
@@ -59,7 +59,7 @@ class SaleController extends Controller
         $sale->sub_total = $sub_total_price;
         // $sale->discount = $discount;
         $sale->user_id = 1;
-        // $sale->user_id = Auth::id();
+        // $sale->user_id = auth('api')->id();
         $sale->client_id = $client_id;
         $order_no = new AutoGenerate;
         $sale->order_no = $order_no->order_no();
@@ -85,9 +85,9 @@ class SaleController extends Controller
             $product_sale->save();
         }
 
-        if (Auth::check()) {
-            if (Auth::user()->shipping) {
-                $address = Auth::user()->shipping;
+        if (auth('api')->check()) {
+            if (auth('api')->user()->shipping) {
+                $address = auth('api')->user()->shipping;
             } else {
                 $address = $data;
                 foreach ($address as  $value) {
@@ -113,7 +113,7 @@ class SaleController extends Controller
     {
         // dd($address);
         $shippingaddress = Shippingaddress::firstOrCreate(
-            ['user_id' => Auth::id()],
+            ['user_id' => auth('api')->id()],
             [
                 'name' => (array_key_exists('name', $address)) ?$address['name'] : null,
                 'street_address' => (array_key_exists('street_address', $address)) ?$address['street_address'] : null,

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
-use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 
 use App\models\Review;
 use Illuminate\Http\Request;
@@ -56,7 +56,7 @@ class ReviewController extends Controller
         $rating->rating = $request->rating;
         $rating->product_id = $request->id;
         $rating->comments = $request->comments;
-        $rating->user_id = Auth::id();
+        $rating->user_id = auth('api')->id();
         $rating->save();
         return $rating;
     }

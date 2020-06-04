@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Shippingaddress extends Model
 {
     protected $fillable = [
-        'name', 'street_address', 'town', 'county', 'postal_code', 'phone', 'email', 'country'
+        'user_id', 'name', 'street_address', 'town', 'county', 'postal_code', 'phone', 'email', 'country'
     ];
     public function user()
     {
