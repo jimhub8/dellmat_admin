@@ -10,7 +10,8 @@ use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use SoftDeletes, Searchable;
+    use SoftDeletes;
+    // use SoftDeletes, Searchable;
     public $with = ['product_variants', 'skus', 'categories', 'brands', 'subcategories', 'images'];
     public function sales()
     {

@@ -208,7 +208,7 @@
         <v-icon dark right>{{ icon }}</v-icon>
     </v-snackbar>
     <v-footer style="background: #e2e0e0 !important;" app>
-        <span style="color: #000; margin: auto;">Jimmy pos &copy; {{ new Date().getFullYear() }}</span>
+        <span style="color: #000; margin: auto;">{{ app_name }} &copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
     <!-- <myDrawerOpen :user="user"></myDrawerOpen> -->
 

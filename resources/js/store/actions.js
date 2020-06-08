@@ -31,8 +31,8 @@ export default {
                 } else if (error.response.status === 401 || error.response.status === 409) {
                     eventBus.$emit('reloadRequest', error.response.statusText)
                 } else if (error.response.status === 422) {
-                    eventBus.$emit('errorEvent', error.response.data.message + ': ' + error.response.statusText)
                     context.commit('errors', error.response.data.errors)
+                    eventBus.$emit('errorEvent', error.response.data.message + ': ' + error.response.statusText)
                     return
                 }
                 context.commit('errors', error.response.data.errors)

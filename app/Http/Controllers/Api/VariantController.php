@@ -100,7 +100,7 @@ class VariantController extends Controller
 
         $variants = $request->variants;
         $product_variants = ProductVariant::updateOrCreate(
-            ['product_id' => $id],
+            ['product_id' => $id]
         );
         $option_value_id_arr = [];
 
@@ -110,7 +110,7 @@ class VariantController extends Controller
             $option_id = $option_id->id;
             $option_arr[] = $option_id;
             $product_option = ProductOption::updateOrCreate(
-                ['product_id' => $id, 'option_id' => $option_id],
+                ['product_id' => $id, 'option_id' => $option_id]
             );
 
             foreach ($variant['tags'] as $key => $tag) {
@@ -131,7 +131,7 @@ class VariantController extends Controller
                         'product_option_product_id' =>  $product_option_product_id,
                         'option_value_option_id' =>  $option_value_option_id,
                         'product_option_id' =>  $product_option_id,
-                        'option_value_id' =>  $option_value_id,
+                        'option_value_id' =>  $option_value_id
                     ],
                 );
             }
@@ -162,7 +162,7 @@ class VariantController extends Controller
                     'price' => $sku['price'],
                     'quantity' => $sku['qty_available'],
                     'product_id' => $id,
-                    'reorder_point' => $sku['reorder_point'],
+                    'reorder_point' => $sku['reorder_point']
                     // 'deleted_at' => null,
                 ]
             );

@@ -85,11 +85,11 @@ class ImageController extends Controller
     {
         // dd(Storage::disk(env('STORAGE_DISK'))->delete('/swap/products/1MniNbpPc6XXwZJkbxQ8Sriuz2X66EjR42E3FK8x.jpeg'));
         // return ;
-        
+
         // return $request->all();
         // dd($image);
-       
-        if ($request->hasFile('image')) { 
+
+        if ($request->hasFile('image')) {
             $image = Image::where('product_id', $id)->where('display', 1)->first();
             if (!$image) {
                 $image_file = $request->all();
@@ -100,7 +100,7 @@ class ImageController extends Controller
                     $image_update->display = false;
                     $image_update->save();
                 }
-                $file_arr = explode('.com',$image->image);
+                $file_arr = explode('.com', $image->image);
                 $image_path = $file_arr[1];
                 // dd($file_arr);
                 if (Storage::disk(env('STORAGE_DISK'))->exists($image_path)) {
@@ -108,7 +108,7 @@ class ImageController extends Controller
                     Storage::disk(env('STORAGE_DISK'))->delete($image_path);
                 }
             }
-        $image->product_id = $id;
+            $image->product_id = $id;
 
             $img = $request->image;
             $imagename = Storage::disk(env('STORAGE_DISK'))->putFile('swap/products', $img, 'public');
@@ -119,36 +119,44 @@ class ImageController extends Controller
             $image->display = true;
             $image->save();
             return $image;
-    }
+        }
         return 'error';
     }
 
     public function product_image(Request $request, $id)
     {
-        // dd($request->image);
-        $upload = new Image();
-        // $upload = Product::find($id);
-        $upload->product_id = $id;
         if ($request->hasFile('image')) {
-            $img = $request->image;
-            // dd($upload->image);
-            if (File::exists($upload->image)) {
-                // return ('test');
-                $image_path = $upload->image;
-                File::delete($image_path);
+            $image = Image::where('product_id', $id)->where('display', 0)->first();
+            if (!$image) {
+                $image_file = $request->all();
+                $image = new Image();
+            } else {
+                $image_display = Image::where('product_id', $id)->where('display', 0)->get();
+                foreach ($image_display as  $image_update) {
+                    $image_update->display = false;
+                    $image_update->save();
+                }
+                $file_arr = explode('.com', $image->image);
+                $image_path = $file_arr[1];
+                // dd($file_arr);
+                if (Storage::disk(env('STORAGE_DISK'))->exists($image_path)) {
+                    $image_path = $image->image;
+                    Storage::disk(env('STORAGE_DISK'))->delete($image_path);
+                }
             }
-            $imagename = Storage::disk('dellmat')->put('pro_images', $img);
-            // $imagename = Storage::disk('public')->put('pro_images', $img);
-            // return ('noop');
+            $image->product_id = $id;
+
+            $img = $request->image;
+            $imagename = Storage::disk(env('STORAGE_DISK'))->putFile('swap/productImages', $img, 'public');
             $imgArr = explode('/', $imagename);
-            $image_name = $imgArr[1];
-            $upload->image = '/delstorage/pro_images/' . $image_name;
-            // $upload->image = '/storage/pro_images/' . $image_name;
-            $upload->display = false;
-            // $upload->image = env('APP_URL') . '/storage/products/' . $image_name;
-            $upload->save();
-            return $upload;
+            $image_name = $imgArr[2];
+            $uploaded_img = env('STORAGE_PATH') . 'swap/productImages/' . $image_name;
+            $image->image = $uploaded_img;
+            $image->display = false;
+            $image->save();
+            return $image;
         }
+        return 'error';
     }
 
 
@@ -162,7 +170,7 @@ class ImageController extends Controller
         $dropboxFileName = '/myphoto4.png';
 
 
-        $Client->uploadFile($dropboxFileName,WriteMode::add(),$file, $size);
+        $Client->uploadFile($dropboxFileName, WriteMode::add(), $file, $size);
         $links['share'] = $Client->createShareableLink($dropboxFileName);
         $links['view'] = $Client->createTemporaryDirectLink($dropboxFileName);
 

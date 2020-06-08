@@ -21,7 +21,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        return Client::paginate(500);
+        return User::paginate(500);
     }
 
     /**
@@ -33,10 +33,14 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         // return $request->all();
+
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'email' => 'required',
         ]);
-        $client = new Client();
+        $client = new User();
         $client->user_id = $this->logged_user()->id;
         $client->name = $request->name;
         $client->email = $request->email;
@@ -56,7 +60,7 @@ class ClientController extends Controller
      */
     public function show($id)
     {
-        return Client::find($id);
+        return User::find($id);
     }
 
     /**
@@ -68,7 +72,7 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $client = Client::find($id);
+        $client = User::find($id);
         $client->name = $request->name;
         $client->email = $request->email;
         $client->phone = $request->phone;
@@ -85,12 +89,12 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
-        Client::find($id)->delete();
+        User::find($id)->delete();
     }
 
     public function client_search($search)
     {
-        return Client::where('name', 'LIKE', "%{$search}%")
+        return User::where('name', 'LIKE', "%{$search}%")
             // ->orWhere('product_barcode', 'LIKE', "%{$search}%")
             // ->orWhere('description', 'LIKE', "%{$search}%")
             ->paginate(100);

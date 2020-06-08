@@ -16,11 +16,11 @@
                             </v-card-title>
                             <v-window v-model="step">
                                 <v-window-item :value="1">
-                                    <Display :product_id="product_id"></Display>
+                                    <Display :product_id="product_id" :avatar="avatar" :product="product"></Display>
                                 </v-window-item>
 
                                 <v-window-item :value="2">
-                                    <Others :product_id="product_id"></Others>
+                                    <Others :product_id="product_id" :images="images"></Others>
                                 </v-window-item>
 
                             </v-window>
@@ -58,7 +58,7 @@ export default {
     },
     data: () => ({
         // length: 3,
-        // window: 0,
+        avatar: '',
         dialog: false,
         step: 1,
         files: [],
@@ -93,6 +93,9 @@ export default {
             this.avatar = data.image;
             this.dialog = true;
             this.product_id = data.id
+
+            this.images = data.images
+
             // this.getImages()
         });
     }

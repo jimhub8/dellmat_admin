@@ -24,6 +24,19 @@ class SellerController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'email' => 'required|email|unique:sellers,email',
+            'company_name' => 'required',
+            'company_address' => 'required',
+            'company_phone' => 'required',
+            'company_email' => 'required',
+            'building' => 'required',
+            'floor' => 'required',
+            'payment_mode' => 'required',
+        ]);
         $data = $request->all();
         // return $data['phone'];
         // return $request->all();

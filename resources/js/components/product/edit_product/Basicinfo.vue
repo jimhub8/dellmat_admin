@@ -54,6 +54,10 @@
         <v-flex xs12 sm12 style="padding: 7px 0;">
             <label for="">Description</label>
             <vue-editor v-model="product.description"></vue-editor>
+            <div v-if="errors.product">
+            <small class="text-danger" v-if="errors.product.description">{{ errors.product.description[0] }}</small>
+            </div>
+
         </v-flex>
     </v-layout>
 </div>
@@ -90,6 +94,10 @@ export default {
     computed: {
         countries() {
             return this.$store.getters.countries
+        },
+
+        errors() {
+            return this.$store.getters.errors
         },
 
     },

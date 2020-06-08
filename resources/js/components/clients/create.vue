@@ -15,14 +15,17 @@
                                     <div>
                                         <label for="">Full Name</label>
                                         <el-input placeholder="John Doe" v-model="form.name"></el-input>
+                                        <small class="text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
                                     </div>
                                     <div>
                                         <label for="">Email Address</label>
                                         <el-input placeholder="john@gmail.com" v-model="form.email"></el-input>
+                                        <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
                                     </div>
                                     <div>
                                         <label for="">Phone Number</label>
                                         <el-input placeholder="+254..." v-model="form.phone"></el-input>
+                                        <small class="text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
                                     </div>
                                     <label for="">Gender</label>
                                     <el-select v-model="form.gender" filterable clearable placeholder="Gender" style="width: 100%;">
@@ -56,7 +59,6 @@ export default {
         dialog: false,
         loading: false,
         form: {},
-        errors: {},
         payload: {
             model: 'clients',
         },
@@ -89,10 +91,9 @@ export default {
         }
     },
     computed: {
-        suppliers() {
-            return this.$store.dispatch('suppliers')
+        errors() {
+            return this.$store.getters.errors;
         },
-
         groups() {
             return this.$store.getters.groups;
         },

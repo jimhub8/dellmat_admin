@@ -3,14 +3,28 @@
     <v-layout row justify-center>
         <v-container grid-list-md>
             <!-- <v-layout wrap> -->
-            <v-layout wrap>
-                <v-flex sm6 v-for="image in images" :key="image.id">
-                    <img :src="image.image" alt="" style="height: 280px;width: 300px;">
-                    <br>
-                    <small style="cursor: pointer; color: red;margin-bottom: 5px;" @click="remove(image.id)">remove</small>
-                </v-flex>
-            </v-layout>
-            <!-- <v-flex sm12> -->
+
+            <v-row>
+                <v-col cols="12" sm="12">
+                    <v-card>
+                        <v-container fluid>
+                            <v-row>
+                                <v-col v-for="image in images" :key="image.id" class="d-flex child-flex" cols="4">
+                                    <v-card flat tile class="d-flex">
+                                        <v-img :src="image.image" :lazy-src="image.image" aspect-ratio="1" class="grey lighten-2">
+                                            <template v-slot:placeholder>
+                                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                                </v-row>
+                                            </template>
+                                        </v-img>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </v-card>
+                </v-col>
+            </v-row>
             <v-form ref="form" @submit.prevent>
                 <div class="large-12 medium-12 small-12 filezone">
                     <input type="file" id="files" ref="files" multiple v-on:change="handleFiles()" />
@@ -45,7 +59,7 @@
 <script>
 // import VueUploadMultipleImage from 'vue-upload-multiple-image'
 export default {
-    props: ['product_id'],
+    props: ['product_id', 'images'],
     components: {
         // LightBox,/
     },
@@ -61,7 +75,7 @@ export default {
             files: [],
             upload_files: [],
             product: [],
-            images: [],
+            // images: [],
         };
     },
     methods: {
@@ -83,8 +97,8 @@ export default {
                     .then(
                         function (data) {
                             this.loading = false;
-                            console.log(this.files.length, i);
-                            console.log(data);
+                            // console.log(this.files.length, i);
+                            // console.log(data);
                             this.files[i].id = data["data"]["id"];
                             this.files.splice(i, 1, this.files[i]);
                             this.upload_files.push(data.data);
@@ -115,6 +129,7 @@ export default {
                     })
                     .then(response => {
                         // alert('finish2')
+                        eventBus.$emit('productEvent')
                         eventBus.$emit("alertRequest", "Successifully Created");
                         // this.getImages();
                         this.loading = false;
@@ -208,7 +223,13 @@ export default {
         }
     },
     created() {
+        // eventBus.$on("openImageEvent", data => {
+        //     // this.product = data;
+        //     console.log(data);
+        //     this.images = data.images
 
+        //     // this.avatar = data.image;
+        // });
     }
 };
 </script>

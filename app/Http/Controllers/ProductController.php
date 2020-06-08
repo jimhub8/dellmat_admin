@@ -84,10 +84,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+    //     $request->validate([
+    //         'product.description' => 'required'
+    //     ],
+    //     [
+    //         'product.description.required' => 'Product description field is required'
+    //     ]
+    // );
         // return $request->all();
-        // $request->validate([
-        //     'description' => 'required'
-        // ]);
         $sku_values = $request->sku_values;
         $product = $request->product;
         // return $request->product['subcategories'];
@@ -97,11 +101,11 @@ class ProductController extends Controller
             ],
             [
                 'price' => $sku_values['price'],
-                'description' => $product['description'],
+                'description' => (array_key_exists('description', $product)) ? $product['description'] : '',
                 // 'description' => ($sku_values['description']) ? $sku_values['description'] : $product['description'],
                 'quantity' => $sku_values['quantity'],
                 'product_id' => $id,
-                'reorder_point' => $sku_values['reorder_point'],
+                'reorder_point' => $sku_values['reorder_point']
             ]
         );
 

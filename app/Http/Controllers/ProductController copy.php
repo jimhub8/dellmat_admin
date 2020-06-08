@@ -220,7 +220,7 @@ class ProductController_copy extends Controller
         // $product_variants->product_id = $id;
         // $product_variants->save();
         $product_variants = ProductVariant::updateOrCreate(
-            ['product_id' => $id],
+            ['product_id' => $id]
         );
 
         $option_arr = [];
@@ -237,7 +237,7 @@ class ProductController_copy extends Controller
             // $product_option->save();
 
             $product_option = ProductOption::updateOrCreate(
-                ['product_id' => $id, 'option_id' => $option_id],
+                ['product_id' => $id, 'option_id' => $option_id]
             );
 
             foreach ($variant['tags'] as $key => $tag) {
@@ -276,7 +276,7 @@ class ProductController_copy extends Controller
                         'product_option_product_id' =>  $product_option_product_id,
                         'option_value_option_id' =>  $option_value_option_id,
                         'product_option_id' =>  $product_option_id,
-                        'option_value_id' =>  $option_value_id,
+                        'option_value_id' =>  $option_value_id
                         // 'price' =>  $price,
                     ],
                 );

@@ -21,6 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('password');
+            $table->string('gender')->nullable();
+            $table->string('group_id')->nullable();
+            $table->string('payment_type')->nullable();
             $table->date('last_login')->nullable();
             $table->boolean('drawer_open')->default(false);
             $table->softDeletes();

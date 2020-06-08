@@ -36,7 +36,7 @@ export default {
     components: {
         // LightBox,/
     },
-    props: ['product_id'],
+    props: ['product_id', 'product', 'avatar'],
     data() {
         return {
             errors: {},
@@ -104,16 +104,17 @@ export default {
             axios
                 .post(`images/${this.product_id}`, this.file)
                 .then(response => {
+                    eventBus.$emit('productEvent')
+
                     this.loading = false;
                     // console.log(response);
                     eventBus.$emit("alertRequest", 'Successifully uploaded');
                     this.imagePlaced = false;
-                    this.color = "black";
-                    this.text = "Product image updated";
-                    this.snackbar = true;
+
                     // this.close()
                 })
                 .catch(error => {
+                    eventBus.$emit('productEvent')
                     this.loading = false
                     if (error.response.status === 500) {
                         eventBus.$emit('errorEvent', error.response.statusText)
@@ -125,10 +126,10 @@ export default {
     },
     created() {
 
-        eventBus.$on("openImageEvent", data => {
-            this.product = data;
-            this.avatar = data.image;
-        });
+        // eventBus.$on("openImageEvent", data => {
+        //     this.product = data;
+        //     this.avatar = data.image;
+        // });
     }
 };
 </script>

@@ -75,7 +75,7 @@ export default {
                     // context.commit('getBoxes', response.data)
                     // this.$store.dispatch('getProducts');
                     eventBus.$emit('productEvent')
-                    this.$store.dispatch('alertEvent', 'Client added')
+                    this.$store.dispatch('alertEvent', 'Product added')
                     // this.close();
                 })
                 .catch(error => {

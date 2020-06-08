@@ -12,19 +12,22 @@
                         <v-flex sm6>
                             <label for="">Full Name</label>
                             <el-input placeholder="John Doe" v-model="form.name"></el-input>
+                            <small class="text-danger" v-if="errors.name">{{ errors.name[0] }}</small>
                         </v-flex>
                         <v-flex sm6>
-
                             <label for="">Email Address</label>
                             <el-input placeholder="john@gmail.com" v-model="form.email"></el-input>
+                            <small class="text-danger" v-if="errors.email">{{ errors.email[0] }}</small>
                         </v-flex>
                         <v-flex sm6>
                             <label for="">Phone Number</label>
                             <el-input placeholder="+254..." v-model="form.phone"></el-input>
+                            <small class="text-danger" v-if="errors.phone">{{ errors.phone[0] }}</small>
                         </v-flex>
                         <v-flex sm6>
                             <label for="">Address</label>
                             <el-input placeholder="123 main st" v-model="form.address"></el-input>
+                            <small class="text-danger" v-if="errors.address">{{ errors.address[0] }}</small>
                         </v-flex>
                     </v-layout>
                     <v-divider></v-divider>
@@ -34,10 +37,12 @@
                         <v-flex sm6>
                             <label for="">Store name</label>
                             <el-input placeholder="jane's store" v-model="form.company_name"></el-input>
+                            <small class="text-danger" v-if="errors.company_name">{{ errors.company_name[0] }}</small>
                         </v-flex>
                         <v-flex sm6>
                             <label for="">Address</label>
                             <el-input placeholder="123 mainst" v-model="form.company_address"></el-input>
+                            <small class="text-danger" v-if="errors.company_address">{{ errors.company_address[0] }}</small>
                         </v-flex>
                         <v-flex sm6>
                             <label for="">Address 2</label>
@@ -46,10 +51,12 @@
                         <v-flex sm6>
                             <label for="">Store phone no.</label>
                             <el-input placeholder="jane's store" v-model="form.company_phone"></el-input>
+                            <small class="text-danger" v-if="errors.company_phone">{{ errors.company_phone[0] }}</small>
                         </v-flex>
                         <v-flex sm6>
                             <label for="">Store email</label>
                             <el-input placeholder="jane@store.com" v-model="form.company_email"></el-input>
+                            <small class="text-danger" v-if="errors.company_email">{{ errors.company_email[0] }}</small>
                         </v-flex>
                         <v-flex sm6>
                             <label for="">Store website</label>
@@ -85,6 +92,7 @@
                         <v-radio label="Bank" value="bank"></v-radio>
                         <v-radio label="M-pesa" value="m_pesa"></v-radio>
                     </v-radio-group>
+                            <small class="text-danger" v-if="errors.payment_mode">{{ errors.payment_mode[0] }}</small>
                     <v-layout wrap row v-if="form.payment_mode =='bank'">
                         <v-flex sm6>
                             <label for="">Bank name</label>
@@ -149,7 +157,6 @@ export default {
             mpesa_phone: '',
             payment_mode: 'bank'
         },
-        errors: {},
         gender: [{
                 value: 'Male',
                 lable: 'Male',
@@ -175,6 +182,9 @@ export default {
             this.$store.dispatch('postItems', payload)
                 .then(response => {
                     eventBus.$emit("sellerEvent")
+                }).catch((error) => {
+                    console.log(error);
+
                 });
         },
         close() {
@@ -182,12 +192,9 @@ export default {
         }
     },
     computed: {
-        suppliers() {
-            return this.$store.dispatch('suppliers')
-        },
 
-        groups() {
-            return this.$store.getters.groups;
+        errors() {
+            return this.$store.getters.errors;
         },
     },
 };
