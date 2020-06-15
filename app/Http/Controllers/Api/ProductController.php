@@ -17,7 +17,7 @@ class ProductController extends Controller
 {
     public function shop()
     {
-        $products = Product::paginate(12);
+        $products = Product::with('images')->paginate(12);
         return $this->transform_product($products, '');
     }
     /**
@@ -145,12 +145,12 @@ class ProductController extends Controller
                     if ($pro_image->display) {
                         $product->image = $pro_image->image;
                     } else {
-                        $product->image = env('APP_URL') . '/assets/default.jpg';
+                        $product->image = 'https://jimkiarie8.nyc3.digitaloceanspaces.com/swap/site/no_image.png';
                         // $product->image = 'https://cdn.pixabay.com/photo/2018/09/15/19/53/online-3680202_960_720.jpg';                        $product->image = 'https://cdn.pixabay.com/photo/2018/09/15/19/53/online-3680202_960_720.jpg';
                     }
                 }
             } else {
-                $product->image = env('APP_URL') . '/assets/default.jpg';
+                $product->image = 'https://jimkiarie8.nyc3.digitaloceanspaces.com/swap/site/no_image.png';
                 // $product->image = 'https://cdn.pixabay.com/photo/2018/09/15/19/53/online-3680202_960_720.jpg';                $product->image = 'https://cdn.pixabay.com/photo/2018/09/15/19/53/online-3680202_960_720.jpg';
             }
             return $product;
