@@ -29,7 +29,7 @@ use App\models\Sale_update;
 use App\models\Shippingaddress;
 use Illuminate\Support\Facades\Mail;
 
-class PaymentController extends Controller
+class PaymentController_copy extends Controller
 {
     public function shipping($address)
     {
@@ -247,8 +247,89 @@ class PaymentController extends Controller
         $cart_same = new SaleController;
         $cart = $this->getCart();
         // return $cart;
+
         $res = $cart_same->sale($cart, 'Cash on delivery', null, $request->shipping);
         return $res;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $user = auth('api')->user();
+        $order = new Order;
+        $order->buyer_id = auth('api')->id();
+        // $order->buyer_id = auth('api')->id();
+        $payment_id = new AutoGenerate;
+        $order->payment_id = $payment_id->randomPaymentId();
+        // foreach ($cart as $product) {
+        //     $order->company_id = $product['item']['company_id'];
+        // }
+        $order->address = $user->address;
+        $order->status = 'Unconfirmed';
+        $order->amount = $this->cart_total();;
+        $order->name = $user->name;
+        $cart_a = [];
+        foreach ($this->getCart() as $value) {
+            $cart_items = [];
+            // dd($value->name);
+            $cart_items['qty'] = $value->qty;
+            $cart_items['product'] = $value->name;
+            $cart_items['options'] = $value->options;
+            $cart_items['subtotal'] = $value->subtotal;
+            $cart_items['rowId'] = $value->rowId;
+            $cart_items['tax'] = $value->tax;
+            $cart_items['price'] = $value->price;
+
+            $cart_a[] = $cart_items;
+        }
+        $order->cart = serialize($cart_a);
+        // dd('dwdq');
+        // $order->paypal = serialize($payment);
+        // $orderSave = $user->orders()->save();
+        $order->save();
+
+        $this->getCartProduct();
+        $sale_update = new Sale_update();
+        $sale_update->sold('Unconfirmed', $order->id);
+        $mail_order = Order::select('address', 'amount', 'buyer_id', 'created_at', 'deleted_at', 'delivered', 'id', 'name', 'payment_id', 'paypal', 'status',)->with('sales')->find($order->id);
+        // $mail_order->transform(function($cart) {
+        //     $cart->cart = '';
+        // });
+        // return ($mail_order);
+        // Mail::queue(new ClientWelcome($user));
+        Mail::send(new ThankYou($user, $mail_order, $this->cart_total()));
+        return;
+        // $this->sales('Unconfirmed', $request->all());
+        // Notification::send($user, new OrderNotification($order, $cart));
+        if ($order->save()) {
+            // $request->session()->forget('cart');
+            // Cart::destroy();
+        }
+
+        // return $this->returngetCart();
+        return redirect('/#/thankyou');
     }
     public function sales($status, $account)
     {
