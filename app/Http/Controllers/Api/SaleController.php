@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-
+use App\Mail\NewOrder;
 use App\models\AutoGenerate;
 use App\models\Drawer;
 use App\models\Ordershipping;
@@ -14,6 +14,7 @@ use App\models\Sku;
 use Illuminate\Http\Request;
 use Cart;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class SaleController extends Controller
 {
@@ -105,6 +106,10 @@ class SaleController extends Controller
                 ]
             );
         }
+
+        $user = auth('api')->user();
+        $cart = Cart::getContent();
+        Mail::to($user['email'])->send(new NewOrder($sale, $user, $cart));
 
         return $sale;
     }

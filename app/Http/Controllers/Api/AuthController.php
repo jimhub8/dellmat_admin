@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewUser;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -34,6 +36,8 @@ class AuthController extends Controller
             // 'activation_token' => str_random(60)
         ]);
         $user->save();
+        // $user = User::first();
+        Mail::to($request['email'])->send(new NewUser($user));
         // $user->notify(new SignupActivate($user));
         return response()->json([
             'message' => 'Successfully created user!'

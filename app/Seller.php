@@ -5,12 +5,13 @@ namespace App;
 use App\models\Product;
 use App\models\ProductSale;
 use App\models\Storedetails;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\Seller\SellerResetPassword;
 use App\Notifications\Seller\SellerVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Seller extends Authenticatable
+class Seller extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 

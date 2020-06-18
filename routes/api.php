@@ -39,6 +39,7 @@ Route::group([
     });
 });
 
+Route::post('seller_register', 'Seller\Auth\RegisterController@store')->name('store');
 
 Route::post('couponApply', 'Api\CouponController@couponApply')->name('couponApply');
 
