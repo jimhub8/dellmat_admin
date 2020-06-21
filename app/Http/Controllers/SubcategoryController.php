@@ -36,6 +36,7 @@ class SubcategoryController extends Controller
         $subcategory = new Subcategory;
         $subcategory->user_id = $this->logged_user()->id;
         $subcategory->subcategory = $request->subcategory;
+        $subcategory->description = $request->description;
         $subcategory->category_id = $request->categories['id'];
         $subcategory->save();
     }
@@ -62,6 +63,7 @@ class SubcategoryController extends Controller
     {
         $subcategory = Subcategory::find($id);
         $subcategory->subcategory = $request->subcategory;
+        $subcategory->description = $request->description;
         $subcategory->category_id = $request->category_id;
         $subcategory->save();
     }

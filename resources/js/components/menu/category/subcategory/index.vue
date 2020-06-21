@@ -110,6 +110,10 @@ export default {
                     field: "subcategory"
                 },
                 {
+                    label: "Description",
+                    field: "description"
+                },
+                {
                     label: "Created On",
                     field: "created_at",
                     // type: "date",

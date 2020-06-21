@@ -15,6 +15,7 @@ class Sku extends Model
         'description',
         'reorder_point',
         'product_id',
+        'short_description',
     ];
     public function product()
     {

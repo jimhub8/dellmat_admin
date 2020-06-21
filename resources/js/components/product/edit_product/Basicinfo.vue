@@ -52,10 +52,17 @@
             </v-card>
         </v-flex>
         <v-flex xs12 sm12 style="padding: 7px 0;">
+            <label for="">Short Description</label>
+            <vue-editor v-model="product.short_description"></vue-editor>
+            <div v-if="errors.short_description">
+                <small class="text-danger" v-if="errors.product.short_description">{{ errors.product.short_description[0] }}</small>
+            </div>
+        </v-flex>
+        <v-flex xs12 sm12 style="padding: 7px 0;">
             <label for="">Description</label>
             <vue-editor v-model="product.description"></vue-editor>
             <div v-if="errors.product">
-            <small class="text-danger" v-if="errors.product.description">{{ errors.product.description[0] }}</small>
+                <small class="text-danger" v-if="errors.product.description">{{ errors.product.description[0] }}</small>
             </div>
 
         </v-flex>

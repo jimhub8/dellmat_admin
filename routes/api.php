@@ -63,6 +63,7 @@ Route::get('/ecommerce', 'Api\HomeController@ecommerce')->name('ecommerce')->mid
 Route::get('/getReviews/{id}', 'Api\ReviewController@getReviews')->name('getReviews');
 
 Route::get('/category_products/{category}', 'Api\ProductController@category_products')->name('category_products');
+Route::get('/category/{category}', 'Api\CategoryController@category')->name('category');
 
 
 Route::get('/all_products', 'Api\ProductController@all_products')->name('all_products');
@@ -114,57 +115,59 @@ Route::get('/Chattynoty', 'Api\NotificationController@Chattynoty')->name('Chatty
 Route::get('/notifications', 'Api\NotificationController@notifications')->name('notifications');
 
 Route::resource('brands', 'Api\BrandController');
-    Route::resource('subcategories', 'Api\SubcategoryController');
-    Route::resource('categories', 'Api\CategoryController');
+Route::resource('subcategories', 'Api\SubcategoryController');
+Route::resource('categories', 'Api\CategoryController');
 Route::resource('menu', 'Api\MenuController');
 
 Route::get('ratings/{id}', 'Api\ReviewController@ratings')->name('ratings');
 Route::post('rate/{id}', 'Api\ReviewController@rate')->name('rate');
 Route::get('bestRated', 'Api\ReviewController@bestRated')->name('bestRated');
 
+Route::get('subcategory/{id}', 'Api\SubcategoryController@subcategory')->name('subcategory');
+
+
 Route::get('category/{id}', 'Api\CategoryController@category')->name('category');
 Route::get('catLimit', 'Api\CategoryController@catLimit')->name('catLimit');
 
-Route::get('subcategory/{id}', 'Api\SupCategoryController@subcategory')->name('subcategory');
 
 
 Route::get('show_product/{id}', 'Api\ProductController@show_product')->name('show_product');
 
-    Route::post('createpayment', 'Api\PaymentController@create')->name('create');
-    Route::get('execute-payment', 'Api\PaymentController@execute')->name('execute');
-    Route::post('cash_delivery', 'Api\PaymentController@cash_delivery')->name('cash_delivery');
-    Route::get('/clientOrders', 'Api\SaleController@clientOrders')->name('clientOrders');
-    Route::resource('clients', 'Api\ClientController');
-    Route::any('invoice/{id}', 'Api\InvoiceController@invoice')->name('invoice');
-    Route::resource('coupons', 'Api\CouponController');
-    Route::resource('sizes', 'Api\SizeController');
-    Route::resource('images', 'Api\ProductimgController');
-    Route::resource('sales', 'Api\SaleController');
+Route::post('createpayment', 'Api\PaymentController@create')->name('create');
+Route::get('execute-payment', 'Api\PaymentController@execute')->name('execute');
+Route::post('cash_delivery', 'Api\PaymentController@cash_delivery')->name('cash_delivery');
+Route::get('/clientOrders', 'Api\SaleController@clientOrders')->name('clientOrders');
+Route::resource('clients', 'Api\ClientController');
+Route::any('invoice/{id}', 'Api\InvoiceController@invoice')->name('invoice');
+Route::resource('coupons', 'Api\CouponController');
+Route::resource('sizes', 'Api\SizeController');
+Route::resource('images', 'Api\ProductimgController');
+Route::resource('sales', 'Api\SaleController');
 
-    Route::get('/logoutOther', 'Api\UserController@logoutOther')->name('logoutOther');
-    Route::post('/logOtherDevices', 'Api\UserController@logOtherDevices')->name('logOtherDevices');
+Route::get('/logoutOther', 'Api\UserController@logoutOther')->name('logoutOther');
+Route::post('/logOtherDevices', 'Api\UserController@logOtherDevices')->name('logOtherDevices');
 
-    Route::get('/getUsersCount', 'Api\UserController@getUsersCount')->name('getUsersCount');
+Route::get('/getUsersCount', 'Api\UserController@getUsersCount')->name('getUsersCount');
 
-    Route::resource('orders', 'Api\OrderController');
-    Route::resource('aboutus', 'Api\AboutController');
+Route::resource('orders', 'Api\OrderController');
+Route::resource('aboutus', 'Api\AboutController');
 
-    Route::post('/StatusItem/{id}', 'Api\ProductController@StatusItem')->name('StatusItem');
-
-
-    Route::get('/home', 'Api\HomeController@index')->name('home');
-    Route::post('/filterItems', 'Api\FilterController@filterItems')->name('filterItems');
-
-    Route::get('/pay', 'Api\OrderController@pay')->name('pay');
-
-    Route::any('apiGet', 'Api\CarouselController@apiGet')->name('apiGet');
+Route::post('/StatusItem/{id}', 'Api\ProductController@StatusItem')->name('StatusItem');
 
 
-    // Unique
-    Route::post('/searchItems/{search}', 'Api\ProductController@searchItems')->name('searchItems');
-    Route::post('/filterproducts', 'Api\ProductController@filterproducts')->name('filterproducts');
-    Route::get('/randomSku', 'Api\ProductController@randomSku')->name('randomSku');
-    Route::post('/filterProd_table', 'Api\ProductController@filterProd_table')->name('filterProd_table');
+Route::get('/home', 'Api\HomeController@index')->name('home');
+Route::post('/filterItems', 'Api\FilterController@filterItems')->name('filterItems');
+
+Route::get('/pay', 'Api\OrderController@pay')->name('pay');
+
+Route::any('apiGet', 'Api\CarouselController@apiGet')->name('apiGet');
+
+
+// Unique
+Route::post('/searchItems/{search}', 'Api\ProductController@searchItems')->name('searchItems');
+Route::post('/filterproducts', 'Api\ProductController@filterproducts')->name('filterproducts');
+Route::get('/randomSku', 'Api\ProductController@randomSku')->name('randomSku');
+Route::post('/filterProd_table', 'Api\ProductController@filterProd_table')->name('filterProd_table');
 
 Route::get('/product_setting', 'Api\ProductController@product_setting')->name('product_setting');
 Route::get('/shop', 'Api\ProductController@shop')->name('shop');

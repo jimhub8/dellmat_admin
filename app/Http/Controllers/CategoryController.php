@@ -36,6 +36,7 @@ class CategoryController extends Controller
         $category = new Category;
         $category->category = $request->category;
         $category->menu_id = $request->menu_id;
+        $category->description = $request->description;
         $category->user_id = $this->logged_user()->id;;
         $category->save();
         return $category;
@@ -52,7 +53,6 @@ class CategoryController extends Controller
         return Category::find($id);
 
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -64,6 +64,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->category = $request->category;
+        $category->description = $request->description;
         $category->save();
         return $category;
     }

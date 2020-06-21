@@ -70,4 +70,9 @@ class SubcategoryController extends Controller
     {
         //
     }
+
+    public function subcategory($id)
+    {
+        return Subcategory::find($id);
+    }
 }

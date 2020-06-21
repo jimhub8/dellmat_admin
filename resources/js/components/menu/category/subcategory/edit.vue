@@ -24,6 +24,12 @@
                                 </div>
                             </v-card-text>
                         </v-flex>
+                        <v-flex sm12>
+                            <label for="">Description</label>
+                            <el-input type="textarea" placeholder="Please input" v-model="form.description">
+                            </el-input>
+                            </div>
+                        </v-flex>
                     </v-layout>
                 </v-container>
             </v-card-text>

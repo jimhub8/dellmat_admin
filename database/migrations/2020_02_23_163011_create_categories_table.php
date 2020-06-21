@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('category')->nullable();
+            $table->text('description')->nullable();
 
             $table->unsignedBigInteger('menu_id');
             $table->foreign('menu_id')->references('id')->on('menus') ->onDelete('cascade');

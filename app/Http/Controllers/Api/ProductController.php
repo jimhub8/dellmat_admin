@@ -136,6 +136,7 @@ class ProductController extends Controller
                     $product->price = $product->skus[0]->price;
                     $product->description = $product->skus[0]->description;
                     $product->quantity = $product->skus[0]->quantity;
+                    $product->short_description = strip_tags($product->skus[0]->short_description);
                 }
             } else {
             }
@@ -183,7 +184,7 @@ class ProductController extends Controller
         foreach ($product_id as $key => $value) {
             $product[] = $value->product_id;
         }
-        $products = Product::whereIn('id', $product)->paginate(10);
+        $products = Product::where('id', '!=', $id)->whereIn('id', $product)->paginate(8);
 
         $products = $this->transform_product($products, '');
         return $products;

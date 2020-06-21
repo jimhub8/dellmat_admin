@@ -19,10 +19,17 @@
                         <v-flex sm12>
                             <v-card-text>
                                 <div>
-                                    <label for="">Menu</label>
+                                    <label for="">Category</label>
                                     <el-input placeholder="Tops..." v-model="form.category"></el-input>
                                 </div>
                             </v-card-text>
+                        </v-flex>
+
+                        <v-flex sm12>
+                            <label for="">Description</label>
+                            <el-input type="textarea" placeholder="Please input" v-model="form.description">
+                            </el-input>
+                            </div>
                         </v-flex>
                     </v-layout>
                 </v-container>

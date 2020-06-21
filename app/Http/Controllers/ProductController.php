@@ -94,6 +94,10 @@ class ProductController extends Controller
         // return $request->all();
         $sku_values = $request->sku_values;
         $product = $request->product;
+        $short_description = array_key_exists('short_description', $product) ? $product['short_description'] : '';
+        // return $short_description;
+        // return $product['short_description'];
+        // return array_key_exists('short_description', $product);
         // return $request->product['subcategories'];
         $sku = Sku::updateOrCreate(
             [
@@ -102,6 +106,7 @@ class ProductController extends Controller
             [
                 'price' => $sku_values['price'],
                 'description' => (array_key_exists('description', $product)) ? $product['description'] : '',
+                'short_description' => $short_description,
                 // 'description' => ($sku_values['description']) ? $sku_values['description'] : $product['description'],
                 'quantity' => $sku_values['quantity'],
                 'product_id' => $id,
@@ -149,6 +154,7 @@ class ProductController extends Controller
                     // dd(($product->skus[0]->price));
                     $product->sku_no = $product->skus[0]->sku_no;
                     $product->description = $product->skus[0]->description;
+                    $product->short_description = $product->skus[0]->short_description;
                     $product->price = $product->skus[0]->price;
                     $product->quantity = $product->skus[0]->quantity;
                 }

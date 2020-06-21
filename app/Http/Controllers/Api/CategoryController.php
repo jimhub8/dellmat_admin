@@ -19,7 +19,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with(['products' => function($query) {
+        $categories = Category::with(['products' => function ($query) {
             $query->setEagerLoads([])->take(2);
         }])->paginate(10);
         return $this->transform_cat($categories);
@@ -74,7 +74,10 @@ class CategoryController extends Controller
             return $category;
         });
         return $categories;
-
     }
 
+    public function category($id)
+    {
+        return Category::find($id);
+    }
 }
