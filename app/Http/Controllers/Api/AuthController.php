@@ -39,6 +39,7 @@ class AuthController extends Controller
         // $user = User::first();
         Mail::to($request['email'])->send(new NewUser($user));
         // $user->notify(new SignupActivate($user));
+        
         return response()->json([
             'message' => 'Successfully created user!'
         ], 201);

@@ -50,8 +50,8 @@ class SaleController extends Controller
      */
     public function sale($carts, $method, $payment, $data)
     {
-        // $client_id = auth('api')->id();
-        $client_id = 1;
+        $client_id = auth('api')->id();
+        // $client_id = 1;
         // $total_price = $this->cart_total();
         $total_price = 2000;
         $sub_total_price = $total_price;
