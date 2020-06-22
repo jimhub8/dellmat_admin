@@ -70,8 +70,9 @@ export default {
             axios
                 .post("products", this.form)
                 .then(response => {
+                    console.log(response);
+                    this.goEdit(response.data.id)
                     this.loading = false;
-                    // console.log(response);
                     // context.commit('getBoxes', response.data)
                     // this.$store.dispatch('getProducts');
                     eventBus.$emit('productEvent')
@@ -93,6 +94,15 @@ export default {
         },
         close() {
             this.dialog = false;
+        },
+
+        goEdit(id) {
+            this.$router.push({
+                name: "editProduct",
+                params: {
+                    id: id
+                }
+            });
         },
 
         getSellers() {

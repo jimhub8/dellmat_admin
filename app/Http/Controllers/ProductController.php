@@ -59,6 +59,7 @@ class ProductController extends Controller
         $sku_no = new AutoGenerate;
         $product->sku_no = $sku_no->product_sku();
         $product->save();
+        return $product;
 
     }
 
