@@ -43,7 +43,7 @@ export default {
             loading: false,
             // dialog: false,
             disabled: true,
-            avatar: "",
+            // avatar: "",
             actualImage: false,
             imagePlaced: false,
             files: [],

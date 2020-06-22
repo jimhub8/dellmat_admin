@@ -13,19 +13,19 @@
                     <div data-v-1bd51565="" class="title">
                         <h3 data-v-1bd51565="">{{ product.product_name }}</h3>
                     </div>
-                    <p data-v-1bd51565="">Speedball On-hand:
+                    <p data-v-1bd51565="">On-hand:
                         <b data-v-1bd51565="">{{ product.onhand }}</b>
                     </p>
                     <p data-v-1bd51565="">Status: <b data-v-1bd51565="">{{ product.active }}</b></p>
                     <div data-v-861aa9f6="" data-v-1bd51565="" class="file-upload-link">
                         <label data-v-861aa9f6="" for="imageUpload">
-                                                          <span data-v-861aa9f6="" class="btn-link underline pointer">Upload Image </span>
-                                                      </label>
+                            <span data-v-861aa9f6="" class="btn-link underline pointer">Upload Image </span>
+                        </label>
                         <input data-v-861aa9f6="" id="imageUpload" type="file" style="display: none;">
-                                                    </div>
                     </div>
                 </div>
             </div>
+        </div>
     </v-flex>
 </v-layout>
 </template>
@@ -85,11 +85,10 @@ export default {
 
 [class^="icon-"],
 [class*=" icon-"] {
-    font-family: "Speedball-App" !important;
     speak: none;
     font-style: normal;
     font-weight: normal;
-    font-variant: normal; 
+    font-variant: normal;
     text-transform: none;
     line-height: 1;
     -webkit-font-smoothing: antialiased;

@@ -228,7 +228,7 @@ export default {
         upload() {
             // this.loading = true;
             axios
-                .post(`/pro_image/${this.product.id}`, this.file)
+                .post(`/images/${this.product.id}`, this.file)
                 .then(response => {
                     // this.loading = false;
                     this.$store.dispatch('alertEvent', 'Image uploaded')
@@ -445,7 +445,6 @@ export default {
 
 [class^="icon-"],
 [class*=" icon-"] {
-    font-family: "Speedball-App" !important;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
