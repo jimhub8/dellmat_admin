@@ -74,6 +74,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+
         // return $request->all();
         $request->validate([
             'email' => 'required|string|email',
@@ -84,10 +85,10 @@ class AuthController extends Controller
         // return ($credentials);
         $credentials['deleted_at'] = null;
         if (!Auth::attempt($credentials))
-        // if (!Auth::attempt($credentials))
+            // if (!Auth::attempt($credentials))
             return response()->json([
-            'message' => 'Unauthorized'
-        ], 401);
+                'message' => 'Unauthorized'
+            ], 401);
         $user = Auth::user();
         // return $user;
         // $user = $request->user();
@@ -110,10 +111,16 @@ class AuthController extends Controller
 
     public function cart_session($cookie_id, $user_id)
     {
-        $cart = CartTable::find($cookie_id);
-        $cart->id = $user_id;
-        $cart->save();
-        return $cart;
+         $cart_exists = CartTable::findOrFail($user_id);
+
+        if ($cart_exists) {
+            return $cart_exists;
+        } else {
+            $cart = CartTable::find($cookie_id);
+            $cart->id = $user_id;
+            $cart->save();
+            return $cart;
+        }
     }
 
 
@@ -141,7 +148,7 @@ class AuthController extends Controller
         //  $user = User::first();
         $user = auth('api')->user();
         // $user = response()->json($request->user());
-//        $user->image = 'http://192.168.43.81:82/profile/jim_profile.jpeg';
+        //        $user->image = 'http://192.168.43.81:82/profile/jim_profile.jpeg';
         return $user = response()->json($user);
     }
 

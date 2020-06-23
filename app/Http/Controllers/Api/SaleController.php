@@ -26,7 +26,7 @@ class SaleController extends Controller
     public function index()
     {
         // return $request->all();
-        $sales = Sale::where('client_id', auth('api')->id())->paginate(500);
+        $sales = Sale::orderBy('id', 'DESC')->where('client_id', auth('api')->id())->paginate(500);
         $sales->transform(function ($sale) {
             // $sale->discount = ($sale->discount != null) ? $sale->discount : 0;
             // $total = 0;
@@ -51,6 +51,7 @@ class SaleController extends Controller
     public function sale($carts, $method, $payment, $data)
     {
         $client_id = auth('api')->id();
+        // return ($client_id);
         // $client_id = 1;
         // $total_price = $this->cart_total();
         $total_price = 2000;
@@ -59,7 +60,7 @@ class SaleController extends Controller
         $sale->total_price = $total_price;
         $sale->sub_total = $sub_total_price;
         // $sale->discount = $discount;
-        $sale->user_id = 1;
+        $sale->user_id = $client_id;
         // $sale->user_id = auth('api')->id();
         $sale->client_id = $client_id;
         $order_no = new AutoGenerate;
@@ -108,11 +109,13 @@ class SaleController extends Controller
         }
 
         $user = auth('api')->user();
-        $cart = Cart::getContent();
+        $cart = Cart::session(auth('api')->id())->getContent();
 
         $cart_item = new CartController;
         $cart =  $cart_item->getCart(auth('api')->id());
         Mail::to($user['email'])->send(new NewOrder($sale, $user, $cart));
+
+        Cart::session(auth('api')->id())->clear();
 
         return $sale;
     }

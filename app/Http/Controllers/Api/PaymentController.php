@@ -232,7 +232,9 @@ class PaymentController extends Controller
         // return $request->all();
         // dd($this->getCart());
         $cart_same = new SaleController;
-        $cart = $this->getCart();
+
+        $cart = Cart::session(auth('api')->id())->getContent();
+        $this->getCart();
         // return $cart;
 
         $res = $cart_same->sale($cart, 'Paypal', $payment, null);
@@ -242,11 +244,14 @@ class PaymentController extends Controller
 
     public function cash_delivery(Request $request)
     {
+
+        // $client_id = auth('api')->check();
+        // return ($client_id);
         // return $request->all();
         // dd($this->getCart());
         $cart_same = new SaleController;
         $cart = $this->getCart();
-        // return $cart;
+        $cart = Cart::session(auth('api')->id())->getContent();
         $res = $cart_same->sale($cart, 'Cash on delivery', null, $request->shipping);
         return $res;
     }

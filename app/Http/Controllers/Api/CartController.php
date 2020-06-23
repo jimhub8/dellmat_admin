@@ -61,7 +61,7 @@ class CartController extends Controller
         $quantity = $request->order_qty;
         $cart_available = Cart::session($id)->get($cart_item['id']);
         if ($cart_available->quantity < 2 && $quantity == -1) {
-            $this->flashCart($id, $cart_item['id']);
+            $this->flash_cart($id, $cart_item['id']);
             return;
         }
         // dd($quantity);
@@ -69,12 +69,20 @@ class CartController extends Controller
         return;
     }
 
-    public function flashCart($id, $cart_id)
+    public function flashCart(Request $request, $id)
+    {
+        // return $request->all();
+        Cart::session($id)->remove($request->id);
+    }
+
+    public function flash_cart($id, $cart_id)
     {
         Cart::session($id)->remove($cart_id);
     }
     public function getCart($id)
     {
+        // Cart::session(1)->remove();
+
         return Cart::session($id)->getContent();
         // return $cart_d =  Cart::getContent();
         // foreach ($cart_d as $cart) {

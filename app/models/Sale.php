@@ -3,6 +3,7 @@
 namespace App\models;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,5 +38,10 @@ class Sale extends Model
     public function ordershipping()
     {
         return $this->hasOne(Ordershipping::class);
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->diffForHumans();
     }
 }

@@ -39,6 +39,11 @@ Route::group([
     });
 });
 
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::post('cash_delivery', 'Api\PaymentController@cash_delivery')->name('cash_delivery');
+});
+
+
 Route::post('seller_register', 'Seller\Auth\RegisterController@store')->name('store');
 
 Route::post('couponApply', 'Api\CouponController@couponApply')->name('couponApply');
@@ -135,7 +140,6 @@ Route::get('show_product/{id}', 'Api\ProductController@show_product')->name('sho
 
 Route::post('createpayment', 'Api\PaymentController@create')->name('create');
 Route::get('execute-payment', 'Api\PaymentController@execute')->name('execute');
-Route::post('cash_delivery', 'Api\PaymentController@cash_delivery')->name('cash_delivery');
 Route::get('/clientOrders', 'Api\SaleController@clientOrders')->name('clientOrders');
 Route::resource('clients', 'Api\ClientController');
 Route::any('invoice/{id}', 'Api\InvoiceController@invoice')->name('invoice');
