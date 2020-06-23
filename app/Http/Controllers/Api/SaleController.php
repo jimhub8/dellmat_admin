@@ -109,6 +109,9 @@ class SaleController extends Controller
 
         $user = auth('api')->user();
         $cart = Cart::getContent();
+
+        $cart_item = new CartController;
+        $cart =  $cart_item->getCart(auth('api')->id());
         Mail::to($user['email'])->send(new NewOrder($sale, $user, $cart));
 
         return $sale;

@@ -10,6 +10,7 @@ use App\models\ProductAttribute;
 use App\models\Sku;
 use Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -35,7 +36,7 @@ class CartController extends Controller
         $sku_id = Sku::where('sku_no', $request->sku_no)->first('id');
         $sku_id = $sku_id->id;
         // return $sku_id;
-        Cart::add([
+        Cart::session($id)->add([
             'id' => $sku_id,
             'name' => $product,
             'quantity' => $request->order_qty,
@@ -45,7 +46,7 @@ class CartController extends Controller
                 $request->choices
             )
         ]);
-        return $this->getCart();
+        return $this->getCart($id);
     }
     public function update_cart(Request $request, $id)
     {
@@ -58,34 +59,35 @@ class CartController extends Controller
         // return $sku_id;
 
         $quantity = $request->order_qty;
-        $cart_available = Cart::get($id);
+        $cart_available = Cart::session($id)->get($cart_item['id']);
         if ($cart_available->quantity < 2 && $quantity == -1) {
-            $this->flashCart($id);
+            $this->flashCart($id, $cart_item['id']);
             return;
         }
         // dd($quantity);
-        Cart::update($id, ['quantity' => $quantity]);
+        Cart::update($cart_item['id'], ['quantity' => $quantity]);
         return;
     }
 
-    public function flashCart($id)
+    public function flashCart($id, $cart_id)
     {
-        Cart::remove($id);
+        Cart::session($id)->remove($cart_id);
     }
-    public function getCart()
+    public function getCart($id)
     {
-        return $cart_d =  Cart::getContent();
-        foreach ($cart_d as $cart) {
-            $sku = Sku::where('id', (int) $cart->id)->first('product_id');
-            // return $sku;
-            $products = Product::setEagerLoads([])->where('id', $sku->product_id)->get();
+        return Cart::session($id)->getContent();
+        // return $cart_d =  Cart::getContent();
+        // foreach ($cart_d as $cart) {
+        //     $sku = Sku::where('id', (int) $cart->id)->first('product_id');
+        //     // return $sku;
+        //     $products = Product::setEagerLoads([])->where('id', $sku->product_id)->get();
 
-            $prod_tras = new ProductController;
-            $prod_tras = $prod_tras->transform_product($products);
+        //     $prod_tras = new ProductController;
+        //     $prod_tras = $prod_tras->transform_product($products);
 
-            $cart['product'] = $prod_tras[0];
-            // return ($cart);
-        }
+        //     $cart['product'] = $prod_tras[0];
+        //     // return ($cart);
+        // }
         // $cart_d->transform(function ($cart) {
         // dd($cart->id);
         // $product = Product::setEagerLoads([])->find((int) $cart->id);
@@ -146,10 +148,10 @@ class CartController extends Controller
     }
 
 
-    public function cart_total()
+    public function cart_total($id)
     {
         $total = 0;
-        $items = Cart::getContent();
+        $items = $this->getCart($id);
         // dd($items);
         // return  $item->getPriceSum();
 
@@ -175,9 +177,9 @@ class CartController extends Controller
         // return str_replace(',', '', $cart);
     }
 
-    public function cart_count()
+    public function cart_count($id)
     {
-        $cart_d =  Cart::getContent();
+        $cart_d =  Cart::session($id)->getContent();
         return $cart_d->count();
     }
 }

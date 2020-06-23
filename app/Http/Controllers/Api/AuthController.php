@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Mail\NewUser;
+use App\models\cart\CartTable;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class AuthController extends Controller
         // $user = User::first();
         Mail::to($request['email'])->send(new NewUser($user));
         // $user->notify(new SignupActivate($user));
-        
+
         return response()->json([
             'message' => 'Successfully created user!'
         ], 201);
@@ -88,6 +89,7 @@ class AuthController extends Controller
             'message' => 'Unauthorized'
         ], 401);
         $user = Auth::user();
+        // return $user;
         // $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -95,13 +97,25 @@ class AuthController extends Controller
         if ($request->remember_me)
             $token->expires_at = Carbon::now()->addWeeks(1);
         $token->save();
+        $cart_session = $this->cart_session($request->cookie_id, $user->id);
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
             'expires_at' => Carbon::parse($tokenResult->token->expires_at)->toDateTimeString(),
+            'cart_session' => $cart_session,
             'status' => 200
         ]);
     }
+
+
+    public function cart_session($cookie_id, $user_id)
+    {
+        $cart = CartTable::find($cookie_id);
+        $cart->id = $user_id;
+        $cart->save();
+        return $cart;
+    }
+
 
     /**
      * Logout user (Revoke the token)

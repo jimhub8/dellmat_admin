@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Controllers\Mobile\CartController;
 use App\Mail\ThankYou;
 use Illuminate\Http\Request;
 use PayPal\Api\Payment;
@@ -303,7 +303,8 @@ class PaymentController extends Controller
 
     public function getCart()
     {
-        return Cart::getContent();
+        $cart = new CartController;
+        return $cart->getCart(auth('api')->id());
     }
     public function returngetCart()
     {
