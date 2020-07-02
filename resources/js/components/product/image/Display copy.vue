@@ -1,23 +1,27 @@
 <template>
 <v-card class="mx-auto" max-width="400">
-    <v-img :src="avatar" :lazy-src="avatar" aspect-ratio="1" class="grey lighten-2 white--text align-end"  height="200px">
-        <template v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-            </v-row>
-        </template>
-        <!-- <v-img class="white--text align-end" height="200px" :lazy-src="avatar"> -->
+    <v-img class="white--text align-end" height="200px" :src="avatar">
         <v-card-title>
-            <v-btn color="red" darken-1 raised @click="onPickFile" style="color: #fff;">Update Image</v-btn>
-
+            <v-tooltip v-model="show" top>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn icon v-bind="attrs" v-on="on">
+                        <v-icon color="primary">mdi-upload-network</v-icon>
+                    </v-btn>
+                </template>
+                <span>Update Image</span>
+            </v-tooltip>
         </v-card-title>
     </v-img>
+    <v-card-subtitle class="pb-0">Number 10</v-card-subtitle>
 
     <v-card-actions>
-        <input type="file" @change="Getimage" accept="image/*" style="display: none" ref="fileInput">
-        <v-btn text color="primary" @click="upload" :disabled="loading" :loading="loading">Update</v-btn>
+        <v-btn color="primary" text>
+            Update
+        </v-btn>
 
-        <v-btn text color="primary" @click="cancle" v-show="imagePlaced">Cancle</v-btn>
+        <v-btn color="primary" text>
+            Explore
+        </v-btn>
     </v-card-actions>
 </v-card>
 </template>

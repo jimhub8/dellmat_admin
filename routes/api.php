@@ -90,10 +90,10 @@ Route::post('/cart/{id}', 'Api\CartController@addToCart')->name('addToCart');
 Route::get('/getCart/{id}', 'Api\CartController@getCart')->name('getCart');
 Route::post('/update_cart/{id}', 'Api\CartController@update_cart')->name('update_cart');
 Route::post('/cartAdd/{id}', 'Api\CartController@cartAdd')->name('cartAdd');
-Route::post('/flashCart/{id}', 'Api\CartController@flashCart')->name('flashCart');
+Route::post('/flashCart', 'Api\CartController@flashCart')->name('flashCart');
 Route::get('/getCartProduct', 'Api\CartController@getCartProduct')->name('getCartProduct');
-Route::get('/cart_total/{id}', 'Api\CartController@cart_total')->name('cart_total');
-Route::get('/cart_count/{id}', 'Api\CartController@cart_count')->name('cart_count');
+Route::get('/cart_total', 'Api\CartController@cart_total')->name('cart_total');
+Route::get('/cart_count', 'Api\CartController@cart_count')->name('cart_count');
 
 Route::get('/getProducts', 'Api\ProductController@getProducts')->name('getProducts');
 Route::post('/product_image/{id}', 'Api\ProductController@product_image')->name('product_image');
