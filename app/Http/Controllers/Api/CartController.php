@@ -81,6 +81,7 @@ class CartController extends Controller
     }
     public function getCart($id)
     {
+
         return Cart::session($id)->getContent();
     }
 
@@ -98,7 +99,7 @@ class CartController extends Controller
         return $product;
     }
 
-    public function cart_total()
+    public function cart_total($id)
     {
         $total = 0;
         $items = $this->getCart($id);
