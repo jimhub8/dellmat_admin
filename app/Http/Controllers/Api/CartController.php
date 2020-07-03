@@ -81,29 +81,7 @@ class CartController extends Controller
     }
     public function getCart($id)
     {
-        // Cart::session(1)->remove();
-
         return Cart::session($id)->getContent();
-        // return $cart_d =  Cart::getContent();
-        // foreach ($cart_d as $cart) {
-        //     $sku = Sku::where('id', (int) $cart->id)->first('product_id');
-        //     // return $sku;
-        //     $products = Product::setEagerLoads([])->where('id', $sku->product_id)->get();
-
-        //     $prod_tras = new ProductController;
-        //     $prod_tras = $prod_tras->transform_product($products);
-
-        //     $cart['product'] = $prod_tras[0];
-        //     // return ($cart);
-        // }
-        // $cart_d->transform(function ($cart) {
-        // dd($cart->id);
-        // $product = Product::setEagerLoads([])->find((int) $cart->id);
-        // // dd($product);
-        // $cart->product = $product;
-        // return $cart;
-        // });
-        return $cart_d;
     }
 
     public function getCartProduct()
@@ -120,43 +98,7 @@ class CartController extends Controller
         return $product;
     }
 
-
-    public function couponSes()
-    {
-        $oldCounpon = Session::has('coupon') ? Session::get('coupon') : null;
-        $coupon = new CouponSession($oldCounpon);
-        return $coupon->getCoupon();
-    }
-
-    public function cartAdd_1(Request $request, $id)
-    {
-        // Cart::destroy();
-        // return;
-        return $request->all();
-        $product = Product::setEagerLoads([])->find($id);
-        if ($request->attribute) {
-            $attr_ = ProductAttribute::select('quantity', 'value', 'price')->find($request->attribute);
-            $attr_qty = $attr_->quantity;
-            $product->quantity = $request->attribute;
-            $price = (float) $attr_['price'];
-            // dd($price);
-            $value = $attr_['value'];
-            if ($request->quantity > $attr_qty) {
-                return response()->json(['errors' => "Only " . $attr_qty . " items are available, you already have " . $av_quantity . " in your cart", 'status' => '200'], '200');
-            }
-            Cart::add(['id' => $id, 'product' => $product, 'name' => $product->product_name, 'qty' => $request->quantity, 'price' => $price, 'options' => ['size' => $value]]);
-        } else {
-            // dd($product->price);
-            if ($request->quantity > $product->quantity) {
-                return response()->json(['errors' => "Only " . $product->quantity . " items are available, you already have " . $product->quantity . " in your cart", 'status' => '200'], '200');
-                Cart::add(['id' => $id, 'product' => $product, 'name' => $product->product_name, 'qty' => $request->quantity, 'price' => $product->price]);
-            }
-            Cart::add(['id' => $id, 'product' => $product, 'name' => $product->product_name, 'qty' => $request->quantity, 'price' => (int) $product->price]);
-        }
-    }
-
-
-    public function cart_total($id)
+    public function cart_total()
     {
         $total = 0;
         $items = $this->getCart($id);
@@ -190,4 +132,12 @@ class CartController extends Controller
         $cart_d =  Cart::session($id)->getContent();
         return $cart_d->count();
     }
+
+    public function couponSes()
+    {
+        $oldCounpon = Session::has('coupon') ? Session::get('coupon') : null;
+        $coupon = new CouponSession($oldCounpon);
+        return $coupon->getCoupon();
+    }
+
 }
