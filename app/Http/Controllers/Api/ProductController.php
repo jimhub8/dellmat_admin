@@ -204,7 +204,7 @@ class ProductController extends Controller
         $category =  Category::with('products')->where('category', $category)->first();
         // $category = Category::first();
         if ($category) {
-            $products = $category->products()->paginate(10);
+            $products = $category->products()->paginate(8);
             return $this->transform_product($products, '');
         }
     }
